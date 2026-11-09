@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <!-- Wszystko ładowane wyłącznie z własnej domeny; brak skryptów inline i zewnętrznych zasobów. -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self'; connect-src 'self'; manifest-src 'self'; worker-src 'self'; base-uri 'none'; form-action 'none'; upgrade-insecure-requests">
+  <meta name="referrer" content="no-referrer">
+  <meta name="author" content="Gerard Modlewski">
+  <title>Ceny paliw</title>
+  <meta name="description" content="Maksymalne ceny paliw ogłaszane przez Ministra Energii.">
+  <meta name="theme-color" content="#111214">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Ceny paliw">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icons/icon-192.png" type="image/png">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+  <link rel="stylesheet" href="styles.css">
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <main class="app">
+    <header class="top">
+      <div>
+        <h1>Ceny paliw</h1>
+        <p class="validity" id="validity">Wczytywanie…</p>
+      </div>
+      <button class="icon-btn" id="refresh" type="button" aria-label="Odśwież">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 12a8 8 0 1 1-2.34-5.66M20 4v5h-5"/></svg>
+      </button>
+    </header>
+
+    <p class="banner" id="offline" hidden>Brak połączenia – pokazuję ostatnio zapisane ceny.</p>
+    <p class="banner banner-error" id="error" hidden></p>
+
+    <section class="pylon" id="pylon" aria-live="polite">
+      <!-- wypełniane przez app.js -->
+    </section>
+
+    <section class="history" id="history-section" hidden>
+      <div class="history-head">
+        <h2>Historia</h2>
+        <div class="tabs" role="tablist" id="tabs"></div>
+      </div>
+      <svg class="chart" id="chart" role="img" aria-label="Wykres historii cen"></svg>
+      <ol class="history-list" id="history-list"></ol>
+    </section>
+
+    <section class="market-section" id="market-section" hidden>
+      <h2>Rynek</h2>
+      <div class="market" id="market"></div>
+      <p class="market-note">Ceny hurtowe i notowania mają charakter orientacyjny. Ropa: kontrakt ICE Brent, kurs: NBP tabela A, hurt: cennik ORLEN netto.</p>
+    </section>
+
+    <section class="install" id="install-ios" hidden>
+      <strong>Dodaj do ekranu głównego:</strong> w Safari stuknij „Udostępnij”, potem „Do ekranu początkowego”.
+    </section>
+    <button class="install-btn" id="install-android" type="button" hidden>Zainstaluj aplikację</button>
+
+    <footer class="foot">
+      <p>Maksymalne ceny detaliczne z obwieszczeń Ministra Energii w Monitorze Polskim. Ceny obowiązują od dnia następującego po ogłoszeniu.</p>
+      <p><a id="source-link" href="https://monitorpolski.gov.pl/MP" rel="noopener noreferrer" target="_blank">Źródło obwieszczenia</a> · <span id="updated"></span></p>
+      <p>Autor: Gerard Modlewski</p>
+    </footer>
+  </main>
+</body>
+</html>
