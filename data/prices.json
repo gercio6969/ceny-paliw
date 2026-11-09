@@ -1,29 +1,134 @@
 {
   "schema": 1,
-  "updated_at": "2026-11-09T13:00:00+00:00",
+  "updated_at": "2026-11-09T15:06:18+00:00",
   "source": "Obwieszczenia Ministra Energii w sprawie maksymalnej ceny paliw ciekłych na stacji paliw, Monitor Polski (api.sejm.gov.pl)",
   "latest": {
-    "eli": "MP/2026/1065",
-    "position": 1065,
-    "announced": "2026-11-02",
-    "valid_from": "2026-11-03",
-    "source_url": "https://api.sejm.gov.pl/eli/acts/MP/2026/1065/text.pdf",
+    "eli": "MP/2026/1108",
+    "position": 1108,
+    "announced": "2026-11-09",
+    "valid_from": "2026-11-10",
+    "source_url": "https://monitorpolski.gov.pl/M2026000110801.pdf",
     "prices": {
       "pb95": {
-        "net": 5.98,
-        "gross": 6.45
+        "net": 5.6,
+        "gross": 6.04
       },
       "pb98": {
-        "net": 6.77,
-        "gross": 7.31
+        "net": 6.18,
+        "gross": 6.67
       },
       "on": {
-        "net": 7.53,
-        "gross": 8.14
+        "net": 7.16,
+        "gross": 7.74
       }
     }
   },
   "history": [
+    {
+      "eli": "MP/2026/1108",
+      "position": 1108,
+      "announced": "2026-11-09",
+      "valid_from": "2026-11-10",
+      "source_url": "https://monitorpolski.gov.pl/M2026000110801.pdf",
+      "prices": {
+        "pb95": {
+          "net": 5.6,
+          "gross": 6.04
+        },
+        "pb98": {
+          "net": 6.18,
+          "gross": 6.67
+        },
+        "on": {
+          "net": 7.16,
+          "gross": 7.74
+        }
+      }
+    },
+    {
+      "eli": "MP/2026/1101",
+      "position": 1101,
+      "announced": "2026-11-06",
+      "valid_from": "2026-11-07",
+      "source_url": "https://api.sejm.gov.pl/eli/acts/MP/2026/1101/text.pdf",
+      "prices": {
+        "pb95": {
+          "net": 5.67,
+          "gross": 6.12
+        },
+        "pb98": {
+          "net": 6.29,
+          "gross": 6.8
+        },
+        "on": {
+          "net": 7.25,
+          "gross": 7.83
+        }
+      }
+    },
+    {
+      "eli": "MP/2026/1099",
+      "position": 1099,
+      "announced": "2026-11-05",
+      "valid_from": "2026-11-06",
+      "source_url": "https://api.sejm.gov.pl/eli/acts/MP/2026/1099/text.pdf",
+      "prices": {
+        "pb95": {
+          "net": 5.74,
+          "gross": 6.2
+        },
+        "pb98": {
+          "net": 6.42,
+          "gross": 6.93
+        },
+        "on": {
+          "net": 7.33,
+          "gross": 7.91
+        }
+      }
+    },
+    {
+      "eli": "MP/2026/1083",
+      "position": 1083,
+      "announced": "2026-11-04",
+      "valid_from": "2026-11-05",
+      "source_url": "https://api.sejm.gov.pl/eli/acts/MP/2026/1083/text.pdf",
+      "prices": {
+        "pb95": {
+          "net": 5.83,
+          "gross": 6.29
+        },
+        "pb98": {
+          "net": 6.57,
+          "gross": 7.1
+        },
+        "on": {
+          "net": 7.38,
+          "gross": 7.97
+        }
+      }
+    },
+    {
+      "eli": "MP/2026/1072",
+      "position": 1072,
+      "announced": "2026-11-03",
+      "valid_from": "2026-11-04",
+      "source_url": "https://api.sejm.gov.pl/eli/acts/MP/2026/1072/text.pdf",
+      "prices": {
+        "pb95": {
+          "net": 5.9,
+          "gross": 6.37
+        },
+        "pb98": {
+          "net": 6.7,
+          "gross": 7.24
+        },
+        "on": {
+          "net": 7.46,
+          "gross": 8.05
+        }
+      }
+    },
     {
       "eli": "MP/2026/1065",
       "position": 1065,
@@ -42,6 +147,1161 @@
         "on": {
           "net": 7.53,
           "gross": 8.14
+        }
+      }
+    },
+    {
+      "eli": "MP/2026/1056",
+      "position": 1056,
+      "announced": "2026-10-30",
+      "valid_from": "2026-10-31",
+      "source_url": "https://api.sejm.gov.pl/eli/acts/MP/2026/1056/text.pdf",
+      "prices": {
+        "pb95": {
+          "net": 6.0,
+          "gross": 6.48
+        },
+        "pb98": {
+          "net": 6.77,
+          "gross": 7.32
+        },
+        "on": {
+          "net": 7.55,
+          "gross": 8.15
+        }
+      }
+    },
+    {
+      "eli": "MP/2026/1050",
+      "position": 1050,
+      "announced": "2026-10-29",
+      "valid_from": "2026-10-30",
+      "source_url": "https://api.sejm.gov.pl/eli/acts/MP/2026/1050/text.pdf",
+      "prices": {
+        "pb95": {
+          "net": 6.03,
+          "gross": 6.51
+        },
+        "pb98": {
+          "net": 6.81,
+          "gross": 7.36
+        },
+        "on": {
+          "net": 7.58,
+          "gross": 8.19
+        }
+      }
+    },
+    {
+      "eli": "MP/2026/1045",
+      "position": 1045,
+      "announced": "2026-10-28",
+      "valid_from": "2026-10-29",
+      "source_url": "https://api.sejm.gov.pl/eli/acts/MP/2026/1045/text.pdf",
+      "prices": {
+        "pb95": {
+          "net": 6.05,
+          "gross": 6.53
+        },
+        "pb98": {
+          "net": 6.83,
+          "gross": 7.37
+        },
+        "on": {
+          "net": 7.59,
+          "gross": 8.2
+        }
+      }
+    },
+    {
+      "eli": "MP/2026/1039",
+      "position": 1039,
+      "announced": "2026-10-27",
+      "valid_from": "2026-10-28",
+      "source_url": "https://api.sejm.gov.pl/eli/acts/MP/2026/1039/text.pdf",
+      "prices": {
+        "pb95": {
+          "net": 6.07,
+          "gross": 6.55
+        },
+        "pb98": {
+          "net": 6.71,
+          "gross": 7.24
+        },
+        "on": {
+          "net": 7.67,
+          "gross": 8.28
+        }
+      }
+    },
+    {
+      "eli": "MP/2026/1036",
+      "position": 1036,
+      "announced": "2026-10-23",
+      "valid_from": "2026-10-24",
+      "source_url": "https://api.sejm.gov.pl/eli/acts/MP/2026/1036/text.pdf",
+      "prices": {
+        "pb95": {
+          "net": 6.09,
+          "gross": 6.58
+        },
+        "pb98": {
+          "net": 6.73,
+          "gross": 7.27
+        },
+        "on": {
+          "net": 7.57,
+          "gross": 8.18
+        }
+      }
+    },
+    {
+      "eli": "MP/2026/1034",
+      "position": 1034,
+      "announced": "2026-10-23",
+      "valid_from": "2026-10-24",
+      "source_url": "https://api.sejm.gov.pl/eli/acts/MP/2026/1034/text.pdf",
+      "prices": {
+        "pb95": {
+          "net": 6.02,
+          "gross": 6.51
+        },
+        "pb98": {
+          "net": 6.67,
+          "gross": 7.21
+        },
+        "on": {
+          "net": 7.4,
+          "gross": 7.99
+        }
+      }
+    },
+    {
+      "eli": "MP/2026/1029",
+      "position": 1029,
+      "announced": "2026-10-22",
+      "valid_from": "2026-10-23",
+      "source_url": "https://api.sejm.gov.pl/eli/acts/MP/2026/1029/text.pdf",
+      "prices": {
+        "pb95": {
+          "net": 6.07,
+          "gross": 6.56
+        },
+        "pb98": {
+          "net": 6.74,
+          "gross": 7.28
+        },
+        "on": {
+          "net": 7.4,
+          "gross": 7.99
+        }
+      }
+    },
+    {
+      "eli": "MP/2026/1023",
+      "position": 1023,
+      "announced": "2026-10-21",
+      "valid_from": "2026-10-22",
+      "source_url": "https://api.sejm.gov.pl/eli/acts/MP/2026/1023/text.pdf",
+      "prices": {
+        "pb95": {
+          "net": 6.14,
+          "gross": 6.63
+        },
+        "pb98": {
+          "net": 6.82,
+          "gross": 7.37
+        },
+        "on": {
+          "net": 7.43,
+          "gross": 8.02
+        }
+      }
+    },
+    {
+      "eli": "MP/2026/1022",
+      "position": 1022,
+      "announced": "2026-10-20",
+      "valid_from": "2026-10-21",
+      "source_url": "https://api.sejm.gov.pl/eli/acts/MP/2026/1022/text.pdf",
+      "prices": {
+        "pb95": {
+          "net": 6.2,
+          "gross": 6.7
+        },
+        "pb98": {
+          "net": 6.88,
+          "gross": 7.43
+        },
+        "on": {
+          "net": 7.39,
+          "gross": 7.98
+        }
+      }
+    },
+    {
+      "eli": "MP/2026/1015",
+      "position": 1015,
+      "announced": "2026-10-19",
+      "valid_from": "2026-10-20",
+      "source_url": "https://api.sejm.gov.pl/eli/acts/MP/2026/1015/text.pdf",
+      "prices": {
+        "pb95": {
+          "net": 6.29,
+          "gross": 6.79
+        },
+        "pb98": {
+          "net": 7.0,
+          "gross": 7.56
+        },
+        "on": {
+          "net": 7.38,
+          "gross": 7.97
+        }
+      }
+    },
+    {
+      "eli": "MP/2026/1011",
+      "position": 1011,
+      "announced": "2026-10-16",
+      "valid_from": "2026-10-17",
+      "source_url": "https://api.sejm.gov.pl/eli/acts/MP/2026/1011/text.pdf",
+      "prices": {
+        "pb95": {
+          "net": 6.38,
+          "gross": 6.89
+        },
+        "pb98": {
+          "net": 7.11,
+          "gross": 7.68
+        },
+        "on": {
+          "net": 7.41,
+          "gross": 8.0
+        }
+      }
+    },
+    {
+      "eli": "MP/2026/1006",
+      "position": 1006,
+      "announced": "2026-10-15",
+      "valid_from": "2026-10-16",
+      "source_url": "https://api.sejm.gov.pl/eli/acts/MP/2026/1006/text.pdf",
+      "prices": {
+        "pb95": {
+          "net": 6.43,
+          "gross": 6.95
+        },
+        "pb98": {
+          "net": 7.19,
+          "gross": 7.76
+        },
+        "on": {
+          "net": 7.44,
+          "gross": 8.03
+        }
+      }
+    },
+    {
+      "eli": "MP/2026/1000",
+      "position": 1000,
+      "announced": "2026-10-14",
+      "valid_from": "2026-10-15",
+      "source_url": "https://api.sejm.gov.pl/eli/acts/MP/2026/1000/text.pdf",
+      "prices": {
+        "pb95": {
+          "net": 6.49,
+          "gross": 7.01
+        },
+        "pb98": {
+          "net": 7.25,
+          "gross": 7.83
+        },
+        "on": {
+          "net": 7.45,
+          "gross": 8.05
+        }
+      }
+    },
+    {
+      "eli": "MP/2026/996",
+      "position": 996,
+      "announced": "2026-10-13",
+      "valid_from": "2026-10-14",
+      "source_url": "https://api.sejm.gov.pl/eli/acts/MP/2026/996/text.pdf",
+      "prices": {
+        "pb95": {
+          "net": 6.59,
+          "gross": 7.11
+        },
+        "pb98": {
+          "net": 7.42,
+          "gross": 8.01
+        },
+        "on": {
+          "net": 7.39,
+          "gross": 7.98
+        }
+      }
+    },
+    {
+      "eli": "MP/2026/991",
+      "position": 991,
+      "announced": "2026-10-12",
+      "valid_from": "2026-10-13",
+      "source_url": "https://api.sejm.gov.pl/eli/acts/MP/2026/991/text.pdf",
+      "prices": {
+        "pb95": {
+          "net": 6.54,
+          "gross": 7.06
+        },
+        "pb98": {
+          "net": 7.36,
+          "gross": 7.95
+        },
+        "on": {
+          "net": 7.42,
+          "gross": 8.02
+        }
+      }
+    },
+    {
+      "eli": "MP/2026/985",
+      "position": 985,
+      "announced": "2026-10-09",
+      "valid_from": "2026-10-10",
+      "source_url": "https://api.sejm.gov.pl/eli/acts/MP/2026/985/text.pdf",
+      "prices": {
+        "pb95": {
+          "net": 6.45,
+          "gross": 6.97
+        },
+        "pb98": {
+          "net": 7.27,
+          "gross": 7.85
+        },
+        "on": {
+          "net": 7.46,
+          "gross": 8.06
+        }
+      }
+    },
+    {
+      "eli": "MP/2026/983",
+      "position": 983,
+      "announced": "2026-10-08",
+      "valid_from": "2026-10-09",
+      "source_url": "https://api.sejm.gov.pl/eli/acts/MP/2026/983/text.pdf",
+      "prices": {
+        "pb95": {
+          "net": 6.39,
+          "gross": 6.9
+        },
+        "pb98": {
+          "net": 7.2,
+          "gross": 7.77
+        },
+        "on": {
+          "net": 7.24,
+          "gross": 7.82
+        }
+      }
+    },
+    {
+      "eli": "MP/2026/978",
+      "position": 978,
+      "announced": "2026-10-07",
+      "valid_from": "2026-10-08",
+      "source_url": "https://api.sejm.gov.pl/eli/acts/MP/2026/978/text.pdf",
+      "prices": {
+        "pb95": {
+          "net": 6.32,
+          "gross": 6.83
+        },
+        "pb98": {
+          "net": 7.14,
+          "gross": 7.71
+        },
+        "on": {
+          "net": 7.16,
+          "gross": 7.74
+        }
+      }
+    },
+    {
+      "eli": "MP/2026/974",
+      "position": 974,
+      "announced": "2026-10-06",
+      "valid_from": "2026-10-07",
+      "source_url": "https://api.sejm.gov.pl/eli/acts/MP/2026/974/text.pdf",
+      "prices": {
+        "pb95": {
+          "net": 6.35,
+          "gross": 6.86
+        },
+        "pb98": {
+          "net": 7.16,
+          "gross": 7.74
+        },
+        "on": {
+          "net": 7.22,
+          "gross": 7.8
+        }
+      }
+    },
+    {
+      "eli": "MP/2026/968",
+      "position": 968,
+      "announced": "2026-10-05",
+      "valid_from": "2026-10-06",
+      "source_url": "https://api.sejm.gov.pl/eli/acts/MP/2026/968/text.pdf",
+      "prices": {
+        "pb95": {
+          "net": 6.29,
+          "gross": 6.79
+        },
+        "pb98": {
+          "net": 7.09,
+          "gross": 7.66
+        },
+        "on": {
+          "net": 7.24,
+          "gross": 7.82
+        }
+      }
+    },
+    {
+      "eli": "MP/2026/964",
+      "position": 964,
+      "announced": "2026-10-02",
+      "valid_from": "2026-10-03",
+      "source_url": "https://api.sejm.gov.pl/eli/acts/MP/2026/964/text.pdf",
+      "prices": {
+        "pb95": {
+          "net": 6.23,
+          "gross": 6.73
+        },
+        "pb98": {
+          "net": 7.03,
+          "gross": 7.59
+        },
+        "on": {
+          "net": 7.3,
+          "gross": 7.88
+        }
+      }
+    },
+    {
+      "eli": "MP/2026/882",
+      "position": 882,
+      "announced": "2026-08-28",
+      "valid_from": "2026-08-29",
+      "source_url": "https://api.sejm.gov.pl/eli/acts/MP/2026/882/text.pdf",
+      "prices": {
+        "pb95": {
+          "net": 6.15,
+          "gross": 6.64
+        },
+        "pb98": {
+          "net": 6.91,
+          "gross": 7.46
+        },
+        "on": {
+          "net": 6.77,
+          "gross": 7.31
+        }
+      }
+    },
+    {
+      "eli": "MP/2026/878",
+      "position": 878,
+      "announced": "2026-08-27",
+      "valid_from": "2026-08-28",
+      "source_url": "https://api.sejm.gov.pl/eli/acts/MP/2026/878/text.pdf",
+      "prices": {
+        "pb95": {
+          "net": 6.09,
+          "gross": 6.57
+        },
+        "pb98": {
+          "net": 6.83,
+          "gross": 7.37
+        },
+        "on": {
+          "net": 6.82,
+          "gross": 7.36
+        }
+      }
+    },
+    {
+      "eli": "MP/2026/873",
+      "position": 873,
+      "announced": "2026-08-26",
+      "valid_from": "2026-08-27",
+      "source_url": "https://api.sejm.gov.pl/eli/acts/MP/2026/873/text.pdf",
+      "prices": {
+        "pb95": {
+          "net": 6.09,
+          "gross": 6.57
+        },
+        "pb98": {
+          "net": 6.85,
+          "gross": 7.39
+        },
+        "on": {
+          "net": 6.92,
+          "gross": 7.47
+        }
+      }
+    },
+    {
+      "eli": "MP/2026/867",
+      "position": 867,
+      "announced": "2026-08-25",
+      "valid_from": "2026-08-26",
+      "source_url": "https://api.sejm.gov.pl/eli/acts/MP/2026/867/text.pdf",
+      "prices": {
+        "pb95": {
+          "net": 6.1,
+          "gross": 6.58
+        },
+        "pb98": {
+          "net": 6.85,
+          "gross": 7.4
+        },
+        "on": {
+          "net": 6.99,
+          "gross": 7.54
+        }
+      }
+    },
+    {
+      "eli": "MP/2026/855",
+      "position": 855,
+      "announced": "2026-08-24",
+      "valid_from": "2026-08-25",
+      "source_url": "https://api.sejm.gov.pl/eli/acts/MP/2026/855/text.pdf",
+      "prices": {
+        "pb95": {
+          "net": 6.08,
+          "gross": 6.57
+        },
+        "pb98": {
+          "net": 6.85,
+          "gross": 7.4
+        },
+        "on": {
+          "net": 7.05,
+          "gross": 7.61
+        }
+      }
+    },
+    {
+      "eli": "MP/2026/850",
+      "position": 850,
+      "announced": "2026-08-21",
+      "valid_from": "2026-08-22",
+      "source_url": "https://api.sejm.gov.pl/eli/acts/MP/2026/850/text.pdf",
+      "prices": {
+        "pb95": {
+          "net": 6.05,
+          "gross": 6.54
+        },
+        "pb98": {
+          "net": 6.81,
+          "gross": 7.36
+        },
+        "on": {
+          "net": 7.03,
+          "gross": 7.59
+        }
+      }
+    },
+    {
+      "eli": "MP/2026/837",
+      "position": 837,
+      "announced": "2026-08-20",
+      "valid_from": "2026-08-21",
+      "source_url": "https://api.sejm.gov.pl/eli/acts/MP/2026/837/text.pdf",
+      "prices": {
+        "pb95": {
+          "net": 6.04,
+          "gross": 6.52
+        },
+        "pb98": {
+          "net": 6.79,
+          "gross": 7.33
+        },
+        "on": {
+          "net": 7.0,
+          "gross": 7.56
+        }
+      }
+    },
+    {
+      "eli": "MP/2026/821",
+      "position": 821,
+      "announced": "2026-08-19",
+      "valid_from": "2026-08-20",
+      "source_url": "https://api.sejm.gov.pl/eli/acts/MP/2026/821/text.pdf",
+      "prices": {
+        "pb95": {
+          "net": 6.01,
+          "gross": 6.49
+        },
+        "pb98": {
+          "net": 6.76,
+          "gross": 7.3
+        },
+        "on": {
+          "net": 6.96,
+          "gross": 7.52
+        }
+      }
+    },
+    {
+      "eli": "MP/2026/809",
+      "position": 809,
+      "announced": "2026-08-18",
+      "valid_from": "2026-08-19",
+      "source_url": "https://api.sejm.gov.pl/eli/acts/MP/2026/809/text.pdf",
+      "prices": {
+        "pb95": {
+          "net": 5.98,
+          "gross": 6.46
+        },
+        "pb98": {
+          "net": 6.72,
+          "gross": 7.26
+        },
+        "on": {
+          "net": 6.92,
+          "gross": 7.47
+        }
+      }
+    },
+    {
+      "eli": "MP/2026/799",
+      "position": 799,
+      "announced": "2026-08-17",
+      "valid_from": "2026-08-18",
+      "source_url": "https://api.sejm.gov.pl/eli/acts/MP/2026/799/text.pdf",
+      "prices": {
+        "pb95": {
+          "net": 5.93,
+          "gross": 6.41
+        },
+        "pb98": {
+          "net": 6.67,
+          "gross": 7.2
+        },
+        "on": {
+          "net": 6.83,
+          "gross": 7.37
+        }
+      }
+    },
+    {
+      "eli": "MP/2026/798",
+      "position": 798,
+      "announced": "2026-08-14",
+      "valid_from": "2026-08-15",
+      "source_url": "https://api.sejm.gov.pl/eli/acts/MP/2026/798/text.pdf",
+      "prices": {
+        "pb95": {
+          "net": 5.93,
+          "gross": 6.41
+        },
+        "pb98": {
+          "net": 6.67,
+          "gross": 7.2
+        },
+        "on": {
+          "net": 6.83,
+          "gross": 7.37
+        }
+      }
+    },
+    {
+      "eli": "MP/2026/644",
+      "position": 644,
+      "announced": "2026-06-29",
+      "valid_from": "2026-06-30",
+      "source_url": "https://api.sejm.gov.pl/eli/acts/MP/2026/644/text.pdf",
+      "prices": {
+        "pb95": {
+          "net": 5.56,
+          "gross": 6.0
+        },
+        "pb98": {
+          "net": 6.18,
+          "gross": 6.68
+        },
+        "on": {
+          "net": 5.73,
+          "gross": 6.19
+        }
+      }
+    },
+    {
+      "eli": "MP/2026/641",
+      "position": 641,
+      "announced": "2026-06-26",
+      "valid_from": "2026-06-27",
+      "source_url": "https://api.sejm.gov.pl/eli/acts/MP/2026/641/text.pdf",
+      "prices": {
+        "pb95": {
+          "net": 5.57,
+          "gross": 6.02
+        },
+        "pb98": {
+          "net": 6.2,
+          "gross": 6.7
+        },
+        "on": {
+          "net": 5.71,
+          "gross": 6.17
+        }
+      }
+    },
+    {
+      "eli": "MP/2026/640",
+      "position": 640,
+      "announced": "2026-06-25",
+      "valid_from": "2026-06-26",
+      "source_url": "https://api.sejm.gov.pl/eli/acts/MP/2026/640/text.pdf",
+      "prices": {
+        "pb95": {
+          "net": 5.51,
+          "gross": 5.95
+        },
+        "pb98": {
+          "net": 6.16,
+          "gross": 6.65
+        },
+        "on": {
+          "net": 5.67,
+          "gross": 6.12
+        }
+      }
+    },
+    {
+      "eli": "MP/2026/633",
+      "position": 633,
+      "announced": "2026-06-24",
+      "valid_from": "2026-06-25",
+      "source_url": "https://api.sejm.gov.pl/eli/acts/MP/2026/633/text.pdf",
+      "prices": {
+        "pb95": {
+          "net": 5.52,
+          "gross": 5.96
+        },
+        "pb98": {
+          "net": 6.17,
+          "gross": 6.67
+        },
+        "on": {
+          "net": 5.66,
+          "gross": 6.11
+        }
+      }
+    },
+    {
+      "eli": "MP/2026/631",
+      "position": 631,
+      "announced": "2026-06-23",
+      "valid_from": "2026-06-24",
+      "source_url": "https://api.sejm.gov.pl/eli/acts/MP/2026/631/text.pdf",
+      "prices": {
+        "pb95": {
+          "net": 5.53,
+          "gross": 5.97
+        },
+        "pb98": {
+          "net": 6.18,
+          "gross": 6.68
+        },
+        "on": {
+          "net": 5.66,
+          "gross": 6.11
+        }
+      }
+    },
+    {
+      "eli": "MP/2026/629",
+      "position": 629,
+      "announced": "2026-06-22",
+      "valid_from": "2026-06-23",
+      "source_url": "https://api.sejm.gov.pl/eli/acts/MP/2026/629/text.pdf",
+      "prices": {
+        "pb95": {
+          "net": 5.54,
+          "gross": 5.98
+        },
+        "pb98": {
+          "net": 6.19,
+          "gross": 6.69
+        },
+        "on": {
+          "net": 5.66,
+          "gross": 6.11
+        }
+      }
+    },
+    {
+      "eli": "MP/2026/627",
+      "position": 627,
+      "announced": "2026-06-19",
+      "valid_from": "2026-06-20",
+      "source_url": "https://api.sejm.gov.pl/eli/acts/MP/2026/627/text.pdf",
+      "prices": {
+        "pb95": {
+          "net": 5.5,
+          "gross": 5.94
+        },
+        "pb98": {
+          "net": 6.12,
+          "gross": 6.61
+        },
+        "on": {
+          "net": 5.66,
+          "gross": 6.12
+        }
+      }
+    },
+    {
+      "eli": "MP/2026/619",
+      "position": 619,
+      "announced": "2026-06-18",
+      "valid_from": "2026-06-19",
+      "source_url": "https://api.sejm.gov.pl/eli/acts/MP/2026/619/text.pdf",
+      "prices": {
+        "pb95": {
+          "net": 5.56,
+          "gross": 6.0
+        },
+        "pb98": {
+          "net": 6.17,
+          "gross": 6.66
+        },
+        "on": {
+          "net": 5.74,
+          "gross": 6.2
+        }
+      }
+    },
+    {
+      "eli": "MP/2026/618",
+      "position": 618,
+      "announced": "2026-06-17",
+      "valid_from": "2026-06-18",
+      "source_url": "https://api.sejm.gov.pl/eli/acts/MP/2026/618/text.pdf",
+      "prices": {
+        "pb95": {
+          "net": 5.61,
+          "gross": 6.06
+        },
+        "pb98": {
+          "net": 6.22,
+          "gross": 6.72
+        },
+        "on": {
+          "net": 5.89,
+          "gross": 6.36
+        }
+      }
+    },
+    {
+      "eli": "MP/2026/614",
+      "position": 614,
+      "announced": "2026-06-16",
+      "valid_from": "2026-06-17",
+      "source_url": "https://api.sejm.gov.pl/eli/acts/MP/2026/614/text.pdf",
+      "prices": {
+        "pb95": {
+          "net": 5.65,
+          "gross": 6.1
+        },
+        "pb98": {
+          "net": 6.25,
+          "gross": 6.75
+        },
+        "on": {
+          "net": 5.97,
+          "gross": 6.44
+        }
+      }
+    },
+    {
+      "eli": "MP/2026/604",
+      "position": 604,
+      "announced": "2026-06-15",
+      "valid_from": "2026-06-16",
+      "source_url": "https://api.sejm.gov.pl/eli/acts/MP/2026/604/text.pdf",
+      "prices": {
+        "pb95": {
+          "net": 5.53,
+          "gross": 5.97
+        },
+        "pb98": {
+          "net": 6.04,
+          "gross": 6.52
+        },
+        "on": {
+          "net": 5.9,
+          "gross": 6.37
+        }
+      }
+    },
+    {
+      "eli": "MP/2026/601",
+      "position": 601,
+      "announced": "2026-06-11",
+      "valid_from": "2026-06-12",
+      "source_url": "https://api.sejm.gov.pl/eli/acts/MP/2026/601/text.pdf",
+      "prices": {
+        "pb95": {
+          "net": 5.59,
+          "gross": 6.04
+        },
+        "pb98": {
+          "net": 6.09,
+          "gross": 6.58
+        },
+        "on": {
+          "net": 5.93,
+          "gross": 6.4
+        }
+      }
+    },
+    {
+      "eli": "MP/2026/589",
+      "position": 589,
+      "announced": "2026-06-11",
+      "valid_from": "2026-06-12",
+      "source_url": "https://api.sejm.gov.pl/eli/acts/MP/2026/589/text.pdf",
+      "prices": {
+        "pb95": {
+          "net": 5.54,
+          "gross": 5.98
+        },
+        "pb98": {
+          "net": 6.06,
+          "gross": 6.55
+        },
+        "on": {
+          "net": 5.9,
+          "gross": 6.37
+        }
+      }
+    },
+    {
+      "eli": "MP/2026/575",
+      "position": 575,
+      "announced": "2026-06-10",
+      "valid_from": "2026-06-11",
+      "source_url": "https://api.sejm.gov.pl/eli/acts/MP/2026/575/text.pdf",
+      "prices": {
+        "pb95": {
+          "net": 5.48,
+          "gross": 5.92
+        },
+        "pb98": {
+          "net": 6.08,
+          "gross": 6.56
+        },
+        "on": {
+          "net": 5.95,
+          "gross": 6.43
+        }
+      }
+    },
+    {
+      "eli": "MP/2026/572",
+      "position": 572,
+      "announced": "2026-06-09",
+      "valid_from": "2026-06-10",
+      "source_url": "https://api.sejm.gov.pl/eli/acts/MP/2026/572/text.pdf",
+      "prices": {
+        "pb95": {
+          "net": 5.52,
+          "gross": 5.96
+        },
+        "pb98": {
+          "net": 6.12,
+          "gross": 6.61
+        },
+        "on": {
+          "net": 5.98,
+          "gross": 6.46
+        }
+      }
+    },
+    {
+      "eli": "MP/2026/566",
+      "position": 566,
+      "announced": "2026-06-08",
+      "valid_from": "2026-06-09",
+      "source_url": "https://api.sejm.gov.pl/eli/acts/MP/2026/566/text.pdf",
+      "prices": {
+        "pb95": {
+          "net": 5.49,
+          "gross": 5.93
+        },
+        "pb98": {
+          "net": 6.08,
+          "gross": 6.57
+        },
+        "on": {
+          "net": 5.97,
+          "gross": 6.45
+        }
+      }
+    },
+    {
+      "eli": "MP/2026/561",
+      "position": 561,
+      "announced": "2026-06-05",
+      "valid_from": "2026-06-06",
+      "source_url": "https://api.sejm.gov.pl/eli/acts/MP/2026/561/text.pdf",
+      "prices": {
+        "pb95": {
+          "net": 5.56,
+          "gross": 6.0
+        },
+        "pb98": {
+          "net": 6.14,
+          "gross": 6.63
+        },
+        "on": {
+          "net": 6.0,
+          "gross": 6.48
+        }
+      }
+    },
+    {
+      "eli": "MP/2026/557",
+      "position": 557,
+      "announced": "2026-06-04",
+      "valid_from": "2026-06-05",
+      "source_url": "https://api.sejm.gov.pl/eli/acts/MP/2026/557/text.pdf",
+      "prices": {
+        "pb95": {
+          "net": 5.5,
+          "gross": 5.94
+        },
+        "pb98": {
+          "net": 6.03,
+          "gross": 6.52
+        },
+        "on": {
+          "net": 5.93,
+          "gross": 6.4
+        }
+      }
+    },
+    {
+      "eli": "MP/2026/552",
+      "position": 552,
+      "announced": "2026-06-03",
+      "valid_from": "2026-06-04",
+      "source_url": "https://api.sejm.gov.pl/eli/acts/MP/2026/552/text.pdf",
+      "prices": {
+        "pb95": {
+          "net": 5.51,
+          "gross": 5.95
+        },
+        "pb98": {
+          "net": 6.06,
+          "gross": 6.54
+        },
+        "on": {
+          "net": 5.93,
+          "gross": 6.4
+        }
+      }
+    },
+    {
+      "eli": "MP/2026/545",
+      "position": 545,
+      "announced": "2026-06-01",
+      "valid_from": "2026-06-02",
+      "source_url": "https://api.sejm.gov.pl/eli/acts/MP/2026/545/text.pdf",
+      "prices": {
+        "pb95": {
+          "net": 5.51,
+          "gross": 5.95
+        },
+        "pb98": {
+          "net": 6.06,
+          "gross": 6.54
+        },
+        "on": {
+          "net": 5.8,
+          "gross": 6.26
+        }
+      }
+    },
+    {
+      "eli": "MP/2026/540",
+      "position": 540,
+      "announced": "2026-05-29",
+      "valid_from": "2026-05-30",
+      "source_url": "https://api.sejm.gov.pl/eli/acts/MP/2026/540/text.pdf",
+      "prices": {
+        "pb95": {
+          "net": 5.6,
+          "gross": 6.05
+        },
+        "pb98": {
+          "net": 6.14,
+          "gross": 6.63
+        },
+        "on": {
+          "net": 5.87,
+          "gross": 6.34
+        }
+      }
+    },
+    {
+      "eli": "MP/2026/536",
+      "position": 536,
+      "announced": "2026-05-28",
+      "valid_from": "2026-05-29",
+      "source_url": "https://api.sejm.gov.pl/eli/acts/MP/2026/536/text.pdf",
+      "prices": {
+        "pb95": {
+          "net": 5.7,
+          "gross": 6.16
+        },
+        "pb98": {
+          "net": 6.23,
+          "gross": 6.73
+        },
+        "on": {
+          "net": 5.89,
+          "gross": 6.37
+        }
+      }
+    },
+    {
+      "eli": "MP/2026/532",
+      "position": 532,
+      "announced": "2026-05-27",
+      "valid_from": "2026-05-28",
+      "source_url": "https://api.sejm.gov.pl/eli/acts/MP/2026/532/text.pdf",
+      "prices": {
+        "pb95": {
+          "net": 5.85,
+          "gross": 6.31
+        },
+        "pb98": {
+          "net": 6.36,
+          "gross": 6.86
+        },
+        "on": {
+          "net": 6.09,
+          "gross": 6.57
         }
       }
     }
