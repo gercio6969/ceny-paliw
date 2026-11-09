@@ -1,0 +1,122 @@
+name: Aktualizacja cen i publikacja
+
+on:
+  schedule:
+    # Obwieszczenia ukazują się w dni robocze zwykle około południa.
+    # Cron działa w UTC: co godzinę 9:23–18:23 UTC (10:23–19:23 w zimie w Polsce).
+    - cron: "23 9-18 * * 1-5"
+  workflow_dispatch:
+    inputs:
+      backfill:
+        description: "Ile najnowszych obwieszczeń sprawdzić (1–400, np. 60 przy pierwszym uruchomieniu)"
+        type: number
+        default: 10
+        required: false
+  push:
+    branches: [main]
+    paths:
+      - "web/**"
+      - ".github/workflows/update-and-deploy.yml"
+
+# Domyślnie żadnych uprawnień – każde zadanie dostaje tylko to, czego potrzebuje.
+permissions: {}
+
+concurrency:
+  group: update-and-deploy
+  cancel-in-progress: false
+
+jobs:
+  update:
+    if: github.event_name != 'push'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write # zapis commita z nowymi danymi
+    outputs:
+      changed: ${{ steps.commit.outputs.changed }}
+    env:
+      PYTHONPATH: src
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: requirements.txt
+      - name: Zainstaluj zależności (zweryfikowane hashe)
+        run: pip install --require-hashes -r requirements.txt
+      - name: Pobierz obwieszczenia
+        env:
+          # Parametr z formularza trafia do zmiennej, nie do treści skryptu (ochrona przed
+          # wstrzyknięciem poleceń), i jest sprawdzany przed użyciem.
+          BACKFILL: ${{ inputs.backfill || 10 }}
+        run: |
+          if ! [[ "$BACKFILL" =~ ^[0-9]{1,3}$ ]] || (( BACKFILL < 1 || BACKFILL > 400 )); then
+            echo "::error::backfill musi być liczbą 1–400" >&2
+            exit 1
+          fi
+          python -m fuelprices --backfill "$BACKFILL"
+      - name: Pobierz dane rynkowe (ropa, kurs, ORLEN)
+        # Dodatek – awaria zewnętrznych źródeł nie może blokować cen paliw.
+        continue-on-error: true
+        run: python -m fuelprices.market
+      - name: Zapisz zmiany w repozytorium
+        id: commit
+        env:
+          # Ustawiane przez publish.sh jako zmienne repozytorium (nie sekrety – to dane publiczne).
+          AUTHOR_NAME: ${{ vars.COMMIT_AUTHOR_NAME || 'Gerard Modlewski' }}
+          AUTHOR_EMAIL: ${{ vars.COMMIT_AUTHOR_EMAIL || 'gercio6969@users.noreply.github.com' }}
+        run: |
+          if [ -z "$(git status --porcelain -- data/)" ]; then
+            echo "Brak zmian w danych."
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          if git diff --quiet -- data/prices.json; then
+            message="Aktualizacja danych rynkowych"
+          else
+            message="Aktualizacja cen paliw: $(jq -r '.latest.eli + " (od " + .latest.valid_from + ")"' data/prices.json)"
+          fi
+          git config user.name "$AUTHOR_NAME"
+          git config user.email "$AUTHOR_EMAIL"
+          git add data/
+          git commit -m "$message"
+          git push
+          echo "changed=true" >> "$GITHUB_OUTPUT"
+
+  deploy:
+    needs: update
+    # Publikuj po zmianie kodu strony albo gdy pojawiły się nowe dane.
+    if: >-
+      !cancelled() && (
+        github.event_name == 'push' ||
+        (needs.update.result == 'success' &&
+         (needs.update.outputs.changed == 'true' || github.event_name == 'workflow_dispatch'))
+      )
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          ref: main # najnowszy commit, łącznie z danymi zapisanymi przed chwilą
+          persist-credentials: false
+      - name: Zbuduj stronę
+        # Publikujemy wyłącznie aplikację i dane – bez kodu źródłowego i plików repozytorium.
+        run: |
+          mkdir -p _site/data
+          cp -r web/. _site/
+          cp data/prices.json _site/data/
+          if [ -f data/market.json ]; then cp data/market.json _site/data/; fi
+          touch _site/.nojekyll
+      - uses: actions/configure-pages@983d7736d9b0ae728b81ab479565c72886d7745b # v5
+      - uses: actions/upload-pages-artifact@56afc609e74202658d3ffba0e8f6dda462b719fa # v3
+        with:
+          path: _site
+      - id: deployment
+        uses: actions/deploy-pages@d6db90164ac5ed86f2b6aed7e0febac5b3c0c03e # v4
