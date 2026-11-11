@@ -1,16 +1,12 @@
 {
   "schema": 1,
-  "updated_at": "2026-11-10T21:48:16+00:00",
+  "updated_at": "2026-11-11T15:10:51+00:00",
   "items": {
     "brent": {
-      "value": 92.11,
-      "previous": 92.57,
-      "date": "2026-11-10",
+      "value": 93.26,
+      "previous": 91.49,
+      "date": "2026-11-11",
       "history": [
-        [
-          "2026-09-30",
-          103.53
-        ],
         [
           "2026-10-01",
           102.31
@@ -125,14 +121,18 @@
         ],
         [
           "2026-11-10",
-          92.11
+          91.49
+        ],
+        [
+          "2026-11-11",
+          93.26
         ]
       ],
       "unit": "USD/bbl",
       "label": "Ropa Brent",
       "source": "ICE Brent (kontrakt), Yahoo Finance",
       "stale": false,
-      "value_pln": 360.14
+      "value_pln": 364.64
     },
     "usdpln": {
       "value": 3.9099,
@@ -271,19 +271,19 @@
       "source": "ORLEN, hurtowe ceny paliw",
       "products": {
         "pb95": {
-          "value": 5.346,
-          "per_m3": 5346.0,
-          "date": "2026-11-10"
+          "value": 5.307,
+          "per_m3": 5307.0,
+          "date": "2026-11-11"
         },
         "pb98": {
-          "value": 5.908,
-          "per_m3": 5908.0,
-          "date": "2026-11-10"
+          "value": 5.884,
+          "per_m3": 5884.0,
+          "date": "2026-11-11"
         },
         "on": {
-          "value": 6.789,
-          "per_m3": 6789.0,
-          "date": "2026-11-10"
+          "value": 6.681,
+          "per_m3": 6681.0,
+          "date": "2026-11-11"
         }
       },
       "stale": false
