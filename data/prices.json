@@ -1,29 +1,50 @@
 {
   "schema": 1,
-  "updated_at": "2026-11-12T15:58:16+00:00",
+  "updated_at": "2026-11-13T15:23:55+00:00",
   "source": "Obwieszczenia Ministra Energii w sprawie maksymalnej ceny paliw ciekłych na stacji paliw, Monitor Polski (api.sejm.gov.pl)",
   "latest": {
-    "eli": "MP/2026/1134",
-    "position": 1134,
-    "announced": "2026-11-12",
-    "valid_from": "2026-11-13",
-    "source_url": "https://monitorpolski.gov.pl/M2026000113401.pdf",
+    "eli": "MP/2026/1140",
+    "position": 1140,
+    "announced": "2026-11-13",
+    "valid_from": "2026-11-14",
+    "source_url": "https://monitorpolski.gov.pl/M2026000114001.pdf",
     "prices": {
       "pb95": {
-        "net": 5.61,
-        "gross": 6.06
+        "net": 5.58,
+        "gross": 6.02
       },
       "pb98": {
-        "net": 6.18,
-        "gross": 6.68
+        "net": 6.17,
+        "gross": 6.66
       },
       "on": {
-        "net": 6.98,
-        "gross": 7.54
+        "net": 6.96,
+        "gross": 7.52
       }
     }
   },
   "history": [
+    {
+      "eli": "MP/2026/1140",
+      "position": 1140,
+      "announced": "2026-11-13",
+      "valid_from": "2026-11-14",
+      "source_url": "https://monitorpolski.gov.pl/M2026000114001.pdf",
+      "prices": {
+        "pb95": {
+          "net": 5.58,
+          "gross": 6.02
+        },
+        "pb98": {
+          "net": 6.17,
+          "gross": 6.66
+        },
+        "on": {
+          "net": 6.96,
+          "gross": 7.52
+        }
+      }
+    },
     {
       "eli": "MP/2026/1134",
       "position": 1134,
