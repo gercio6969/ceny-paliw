@@ -2,7 +2,7 @@
 // Service worker aplikacji Ceny paliw. Autor: Gerard Modlewski.
 
 // Zmieniaj wersję przy każdej zmianie plików aplikacji, żeby telefony pobrały nowe.
-const VERSION = "v4";
+const VERSION = "v5";
 const SHELL_CACHE = `shell-${VERSION}`;
 const DATA_CACHE = "data";
 const SHELL = [

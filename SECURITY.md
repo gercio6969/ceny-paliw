@@ -22,7 +22,7 @@ odpowiedzi zewnętrznych źródeł.
 | Zależności Pythona | zablokowane wersje z hashami (`requirements*.txt`, `pip install --require-hashes`) |
 | Odpowiedzi zewnętrzne | limit rozmiaru (5 MB), sprawdzenie sygnatury PDF i liczby stron, walidacja zakresów cen, odrzucanie NaN/∞ |
 | Integralność danych | parser odmawia zapisu przy nieoczekiwanym formacie; zapis atomowy; poprzednie dane zostają |
-| Frontend | Content Security Policy bez zewnętrznych zasobów i skryptów inline; dane wstawiane wyłącznie przez `textContent`; link do źródła tylko do `monitorpolski.gov.pl` lub `api.sejm.gov.pl` |
+| Frontend | Content Security Policy bez zewnętrznych zasobów i skryptów inline; dane wstawiane wyłącznie przez `textContent`; link do źródła tylko do `monitorpolski.gov.pl`, `api.sejm.gov.pl` lub `www.gov.pl` |
 | Prywatność | brak analityki, ciasteczek i zapytań do zewnętrznych serwerów z telefonu; `no-referrer` |
 | Repozytorium | alerty Dependabot, automatyczne poprawki bezpieczeństwa, skanowanie sekretów z blokadą pushowania |
 
@@ -30,5 +30,7 @@ odpowiedzi zewnętrznych źródeł.
 
 - GitHub Pages nie pozwala ustawiać nagłówków HTTP, więc część polityk (np. `frame-ancestors`)
   nie jest dostępna. CSP jest ustawione przez znacznik `<meta>`.
+- Komunikaty z gov.pl to wiadomości ministerstwa, nie akt prawny; obowiązujące są obwieszczenia
+  w Monitorze Polskim, które zastępują te wpisy po ok. dobie.
 - Dane rynkowe (Yahoo Finance, API ORLEN) pochodzą z nieoficjalnych źródeł i mają charakter
   orientacyjny.

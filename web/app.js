@@ -175,7 +175,7 @@ function renderMarket(market) {
   $("market").replaceChildren(...tiles);
 }
 
-const SOURCE_ORIGINS = ["https://monitorpolski.gov.pl", "https://api.sejm.gov.pl"];
+const SOURCE_ORIGINS = ["https://monitorpolski.gov.pl", "https://api.sejm.gov.pl", "https://www.gov.pl"];
 
 /** Link do źródła tylko w obrębie API Sejmu – nawet gdyby plik danych został podmieniony. */
 function safeSourceUrl(value) {
@@ -280,7 +280,7 @@ function renderPylon(data) {
       el("div", { class: "price today" }, [
         el("span", { class: "price-value", text: fmtPrice.format(p.gross) }),
         deltaNode(p.gross, previous?.prices[fuel.key]?.gross),
-        el("span", { class: "net", text: `netto ${fmtPrice.format(p.net)}` }),
+        isNum(p.net) ? el("span", { class: "net", text: `netto ${fmtPrice.format(p.net)}` }) : null,
       ]),
       tomorrowCell,
     ]);
@@ -293,13 +293,15 @@ function renderValidity(data) {
   const texts = {
     announced: "Ceny na jutro już ogłoszone.",
     unchanged: "W weekend obowiązują ceny z piątkowego obwieszczenia.",
-    pending: "Ceny na jutro jeszcze nieogłoszone – sprawdzamy co 20 minut.",
+    pending: "Ceny na jutro jeszcze nieogłoszone – sprawdzamy 4 razy dziennie, wieczorem już są.",
   };
   $("validity").textContent = `Ceny maksymalne w zł/l. ${texts[tm.state]}`;
 
   const newest = data.latest;
   $("source-link").href = safeSourceUrl(newest.source_url);
-  $("source-link").textContent = `Źródło: Monitor Polski ${newest.eli.replace("MP/", "").replace("/", " poz. ")}`;
+  $("source-link").textContent = newest.eli.startsWith("MP/")
+    ? `Źródło: Monitor Polski ${newest.eli.replace("MP/", "").replace("/", " poz. ")}`
+    : "Źródło: komunikat Ministerstwa Energii (gov.pl)";
   $("updated").textContent = `sprawdzono ${fmtTime.format(new Date(data.updated_at))}`;
 }
 

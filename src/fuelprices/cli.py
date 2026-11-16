@@ -16,7 +16,7 @@ from dataclasses import dataclass
 from datetime import date
 from pathlib import Path
 
-from . import monitor_polski, sejm_api, storage
+from . import gov_pl, monitor_polski, sejm_api, storage
 from .models import Notice
 from .parser import ParseError, parse_issue_date, parse_prices
 
@@ -85,19 +85,33 @@ def run(output: Path, backfill: int, year: int) -> int:
     known = {n.eli for n in history}
     status: dict[str, str] = {}
 
-    # 1. Monitor Polski (RCL) – najważniejsze źródło: obwieszczenia z dzisiaj, czyli ceny
-    #    na jutro. Osobna, „szybka” sesja: kilka krótkich prób zamiast minut oczekiwania.
+    # 1. Monitor Polski (RCL): obwieszczenia z dzisiaj, czyli ceny na jutro, z cenami netto.
+    #    Serwer bywa nieosiągalny z GitHuba, więc jedna krótka próba, bez ponawiania.
     monitor_ok = True
     fresh: list[Candidate] = []
     try:
-        fresh = _from_monitor(sejm_api.make_session(retries=2, backoff=1), year, history, [])
+        fresh = _from_monitor(sejm_api.make_session(retries=0), year, history, [])
         status["Monitor Polski"] = f"OK, nowe: {', '.join(c.eli for c in fresh) or 'brak'}"
     except Exception as exc:  # noqa: BLE001 – drugie źródło może nadal zadziałać
         monitor_ok = False
         status["Monitor Polski"] = f"BŁĄD: {exc}"
         log.warning("Monitor Polski niedostępny: %s", exc)
 
-    # 2. API ELI Sejmu: pełna historia, ale z opóźnieniem jednego dnia roboczego.
+    # 2. Komunikaty Ministerstwa Energii na gov.pl: ceny na jutro (tylko z VAT), osiągalne
+    #    z GitHuba. Zastępowane przez obwieszczenie z ELI, gdy to się pojawi.
+    gov_ok = True
+    gov_new: list[Notice] = []
+    try:
+        known_days = {n.valid_from for n in history}
+        gov_new = gov_pl.fetch_new(sejm_api.make_session(retries=2, backoff=1), known_days)
+        found = ", ".join(n.valid_from.isoformat() for n in gov_new) or "brak"
+        status["gov.pl"] = f"OK, nowe dni: {found}"
+    except Exception as exc:  # noqa: BLE001
+        gov_ok = False
+        status["gov.pl"] = f"BŁĄD: {exc}"
+        log.warning("gov.pl niedostępne: %s", exc)
+
+    # 3. API ELI Sejmu: pełna historia, ale z opóźnieniem jednego dnia roboczego.
     refs: list = []
     eli_ok = True
     try:
@@ -115,7 +129,7 @@ def run(output: Path, backfill: int, year: int) -> int:
     for name, value in status.items():
         log.info("%s: %s", name, value)
 
-    if not eli_ok and not monitor_ok:
+    if not eli_ok and not monitor_ok and not gov_ok:
         log.error("Żadne źródło obwieszczeń nie odpowiada")
         return 1
 
@@ -140,6 +154,10 @@ def run(output: Path, backfill: int, year: int) -> int:
             log.error("Brak daty ogłoszenia dla %s", cand.eli)
             return 1
         new.append(Notice(cand.eli, cand.position, announced, prices, source_url=cand.pdf_url))
+
+    # Komunikaty z gov.pl tylko na dni, których nie pokrywa żadne obwieszczenie.
+    official_days = {n.valid_from for n in new}
+    new += [n for n in gov_new if n.valid_from not in official_days]
 
     if not new:
         newest = history[0].eli if history else "brak"

@@ -27,7 +27,7 @@ import requests
 from .sejm_api import MAX_JSON_BYTES, fetch_limited
 
 BASE_URL = "https://monitorpolski.gov.pl"
-TIMEOUT = 15  # strona pozycji ma kilka kB – długie oczekiwanie oznacza problem po stronie serwera
+TIMEOUT = 8  # strona pozycji ma kilka kB – długie oczekiwanie oznacza blokadę lub awarię
 MAX_PROBES = 120  # ok. 10–15 pozycji dziennie, z zapasem na kilka dni przerwy
 STOP_AFTER_MISSING = 3  # tyle kolejnych nieistniejących pozycji kończy szukanie
 

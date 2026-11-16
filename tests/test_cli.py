@@ -1,9 +1,11 @@
 import json
 from datetime import date
+from decimal import Decimal
 
 import pytest
 
-from fuelprices import cli, monitor_polski, sejm_api
+from fuelprices import cli, gov_pl, monitor_polski, sejm_api
+from fuelprices.models import FuelPrice, Notice
 
 
 def _ref(pos: int, day: int) -> sejm_api.ActRef:
@@ -40,7 +42,14 @@ def sources(monkeypatch, notice_text):
 
     monkeypatch.setattr(sejm_api, "find_notices", find_eli)
     monkeypatch.setattr(monitor_polski, "find_new_fuel_notices", find_monitor)
+
+    def fetch_gov(session, known_days):
+        if isinstance(state.get("gov"), Exception):
+            raise state["gov"]
+        return [n for n in state.get("gov", []) if n.valid_from not in known_days]
+
     monkeypatch.setattr(sejm_api, "download_pdf_text", download)
+    monkeypatch.setattr(gov_pl, "fetch_new", fetch_gov)
     return state
 
 
@@ -101,9 +110,10 @@ def test_works_when_monitor_is_down(tmp_path, sources):
     assert _history(output) == ["MP/2026/1101"]
 
 
-def test_fails_when_both_sources_are_down(tmp_path, sources):
+def test_fails_when_all_sources_are_down(tmp_path, sources):
     sources["eli"] = ConnectionError("ELI down")
     sources["monitor"] = ConnectionError("RCL down")
+    sources["gov"] = ConnectionError("gov.pl down")
     assert cli.run(tmp_path / "prices.json", backfill=10, year=2026) == 1
 
 
@@ -145,3 +155,38 @@ def test_writes_github_step_summary(tmp_path, sources, monkeypatch):
     text = summary.read_text(encoding="utf-8")
     assert "Monitor Polski**: OK, nowe: MP/2026/1141" in text
     assert "API ELI**: BŁĄD" in text
+
+
+def _gov_notice(announced_day: int) -> Notice:
+    price = FuelPrice(gross=Decimal("6.02"))
+    return Notice(
+        eli=f"GOV/2026-11-{announced_day + 1:02d}",
+        position=0,
+        announced=date(2026, 11, announced_day),
+        prices={"pb95": price, "pb98": price, "on": price},
+        source_url="https://www.gov.pl/web/energia/x",
+    )
+
+
+def test_tomorrow_from_gov_when_monitor_is_blocked(tmp_path, sources):
+    """Sytuacja z 16.11.2026: Monitor nieosiągalny z GitHuba, ELI ma tylko piątek."""
+    output = tmp_path / "prices.json"
+    sources["eli"] = [_ref(1140, 13)]
+    sources["monitor"] = ConnectionError("timeout")
+    sources["gov"] = [_gov_notice(16)]
+
+    assert cli.run(output, backfill=10, year=2026) == 0
+
+    assert _history(output) == ["GOV/2026-11-17", "MP/2026/1140"]
+
+
+def test_official_notice_later_replaces_gov_entry(tmp_path, sources):
+    output = tmp_path / "prices.json"
+    sources["eli"] = [_ref(1140, 13)]
+    sources["gov"] = [_gov_notice(16)]
+    assert cli.run(output, backfill=10, year=2026) == 0
+
+    sources["eli"] = [_ref(1141, 16), _ref(1140, 13)]  # następnego dnia ELI już ma 1141
+    assert cli.run(output, backfill=10, year=2026) == 0
+
+    assert _history(output) == ["MP/2026/1141", "MP/2026/1140"]

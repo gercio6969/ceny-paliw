@@ -79,7 +79,7 @@ def _parse_section(key: str, section: str) -> FuelPrice:
     if net is None or gross is None:
         raise ParseError(f"Brak ceny netto lub brutto dla paliwa: {key}")
 
-    price = FuelPrice(net=_to_decimal(net.group(1)), gross=_to_decimal(gross.group(1)))
+    price = FuelPrice(gross=_to_decimal(gross.group(1)), net=_to_decimal(net.group(1)))
     for value in (price.net, price.gross):
         if not _MIN_PRICE <= value <= _MAX_PRICE:
             raise ParseError(f"Nierealna cena {value} zł dla paliwa: {key}")

@@ -11,26 +11,41 @@ FUEL_KEYS = ("pb95", "pb98", "on")
 
 @dataclass(frozen=True)
 class FuelPrice:
-    net: Decimal  # zł za 1 dm3, bez VAT
     gross: Decimal  # zł za 1 l, z VAT
+    net: Decimal | None = None  # zł za 1 dm3, bez VAT; brak w komunikacie na gov.pl
 
-    def to_dict(self) -> dict[str, float]:
-        return {"net": float(self.net), "gross": float(self.gross)}
+    def to_dict(self) -> dict[str, float | None]:
+        return {
+            "net": float(self.net) if self.net is not None else None,
+            "gross": float(self.gross),
+        }
 
     @classmethod
     def from_dict(cls, data: dict) -> FuelPrice:
-        return cls(net=Decimal(str(data["net"])), gross=Decimal(str(data["gross"])))
+        net = data.get("net")
+        return cls(
+            gross=Decimal(str(data["gross"])),
+            net=Decimal(str(net)) if net is not None else None,
+        )
+
+
+OFFICIAL_PREFIX = "MP/"
 
 
 @dataclass(frozen=True)
 class Notice:
     """Jedno obwieszczenie w sprawie maksymalnej ceny paliw."""
 
-    eli: str  # np. "MP/2026/1065"
+    eli: str  # np. "MP/2026/1065"; komunikat z gov.pl przed publikacją w ELI: "GOV/2026-11-17"
     position: int
     announced: date  # data ogłoszenia w Monitorze Polskim
     prices: dict[str, FuelPrice] = field(default_factory=dict)
     source_url: str = ""
+
+    @property
+    def is_official(self) -> bool:
+        """Obwieszczenie z Monitora Polskiego (a nie komunikat ministerstwa na gov.pl)."""
+        return self.eli.startswith(OFFICIAL_PREFIX)
 
     @property
     def valid_from(self) -> date:

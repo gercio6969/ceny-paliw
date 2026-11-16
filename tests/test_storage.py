@@ -37,3 +37,31 @@ def test_save_and_load_roundtrip(tmp_path):
 
 def test_load_missing_file(tmp_path):
     assert storage.load_history(tmp_path / "missing.json") == []
+
+
+def _gov(day: int) -> Notice:
+    price = FuelPrice(gross=Decimal("6.02"))
+    return Notice(
+        eli=f"GOV/2026-11-{day + 1:02d}",
+        position=0,
+        announced=date(2026, 11, day),
+        prices={"pb95": price, "pb98": price, "on": price},
+    )
+
+
+def test_official_notice_replaces_gov_entry_for_same_day():
+    merged = storage.merge([_gov(16)], [_notice(1141, 16)])
+    assert [n.eli for n in merged] == ["MP/2026/1141"]
+
+
+def test_gov_entry_never_replaces_official_notice():
+    merged = storage.merge([_notice(1141, 16)], [_gov(16)])
+    assert [n.eli for n in merged] == ["MP/2026/1141"]
+
+
+def test_gov_entry_without_net_roundtrips(tmp_path):
+    path = tmp_path / "prices.json"
+    storage.save(path, [_gov(16)])
+    document = json.loads(path.read_text(encoding="utf-8"))
+    assert document["latest"]["prices"]["pb95"] == {"net": None, "gross": 6.02}
+    assert storage.load_history(path) == [_gov(16)]

@@ -7,13 +7,14 @@ Aplikacja na telefon (PWA, bez App Store i Google Play) pokazująca **maksymalne
 ## Jak to działa
 
 ```
-api.sejm.gov.pl (ELI)          GitHub Actions (dni robocze, co 20 min)          GitHub Pages
+api.sejm.gov.pl (ELI)          GitHub Actions (co 6 godzin)                    GitHub Pages
 obwieszczenie MP, PDF  ──►  python -m fuelprices  ──►  data/prices.json  ──►  PWA na telefonie
 ```
 
 1. **Scraper** (`src/fuelprices`) szuka obwieszczeń „w sprawie maksymalnej ceny paliw ciekłych na stacji paliw” w dwóch oficjalnych źródłach, pobiera nowe PDF-y, odczytuje ceny netto (zł/dm³) i z VAT (zł/l) i dopisuje je do `data/prices.json`:
-   - **monitorpolski.gov.pl** (Rządowe Centrum Legislacji) – obwieszczenie jest tam w dniu ogłoszenia, więc aplikacja zna cenę na jutro od razu po publikacji;
-   - **API ELI Sejmu** – pełna historia, ale akty pojawiają się z opóźnieniem jednego dnia roboczego, więc służy do uzupełniania historii i jako zapas.
+   - **gov.pl/web/energia** (komunikaty Ministerstwa Energii) – ceny na jutro w dniu ogłoszenia, tylko z VAT;
+   - **API ELI Sejmu** – pełne obwieszczenia z cenami netto, ale z opóźnieniem jednego dnia roboczego; gdy się pojawią, zastępują wpis z gov.pl;
+   - **monitorpolski.gov.pl** (Rządowe Centrum Legislacji) – próbowany przy okazji; z serwerów GitHuba zwykle nieosiągalny.
 2. **Workflow** `update-and-deploy.yml` uruchamia scraper, zapisuje zmiany commitem bota i publikuje stronę na GitHub Pages.
 3. **Dane rynkowe** (`src/fuelprices/market.py`) zapisuje do `data/market.json`: ropę Brent, kurs USD/PLN z NBP, hurtowe ceny ORLEN i kurs akcji ORLEN.
 4. **PWA** (`web/`) czyta oba pliki, działa offline (service worker) i da się ją dodać do ekranu głównego.
@@ -31,19 +32,15 @@ Ceny obowiązują od dnia następującego po ogłoszeniu obwieszczenia. Aplikacj
 
 Każde źródło pobierane jest osobno. Gdy któreś nie odpowiada, zostaje ostatnia znana wartość oznaczona w aplikacji jako nieaktualna, a ceny paliw aktualizują się normalnie.
 
-## Wyzwalacz z Maca (zalecany)
+## Harmonogram
 
-Harmonogram GitHub Actions bywa opóźniany o godziny albo pomijany. W praktyce to kilka uruchomień
-dziennie, często dopiero wieczorem. Dlatego aktualizację uruchamia Mac przez `launchd`:
+Aktualizacja działa w całości na GitHubie, co 6 godzin (w Polsce zimą ok. 6:17, 12:17, 18:17 i 0:17).
+Uruchomienie około 18:00 łapie obwieszczenie z cenami na jutro. Ręczne sprawdzenie w dowolnej chwili:
 
 ```bash
-./scripts/wyzwalacz-mac.sh instaluj   # co 15 min, pon–pt 10:00–18:45, + jedno sprawdzenie od razu
-./scripts/wyzwalacz-mac.sh status     # czy działa i ostatnie wpisy w logu
-./scripts/wyzwalacz-mac.sh teraz      # jednorazowe sprawdzenie
-./scripts/wyzwalacz-mac.sh usun       # wyłączenie
+gh workflow run update-and-deploy.yml --repo gercio6969/ceny-paliw
 ```
 
-Używa zalogowanego `gh`, nie zapisuje żadnych tokenów. Gdy Mac śpi, harmonogram GitHuba działa jako zapas.
 Wynik każdego przebiegu (stan obu źródeł) widać w podsumowaniu runu w zakładce Actions.
 
 ## Instalacja na telefonie

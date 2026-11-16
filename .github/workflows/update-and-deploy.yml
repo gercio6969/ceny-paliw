@@ -1,15 +1,12 @@
 name: Aktualizacja cen i publikacja
 
 on:
-  # Harmonogram GitHuba bywa mocno opóźniany i pomijany (w praktyce kilka uruchomień dziennie),
-  # dlatego główny wyzwalacz to `scripts/wyzwalacz-mac.sh` (launchd na Macu, co 15 minut),
-  # a ten harmonogram działa jako zapas.
+  # Co 6 godzin. Cron działa w UTC: 05:17, 11:17, 17:17, 23:17 UTC,
+  # czyli w Polsce zimą 6:17, 12:17, 18:17, 0:17 (latem godzinę później).
+  # Uruchomienie ok. 18:00 łapie obwieszczenie z cenami na jutro, publikowane zwykle po południu.
+  # GitHub potrafi opóźnić harmonogram nawet o kilkadziesiąt minut.
   schedule:
-    # Cron działa w UTC (w Polsce zimą +1 h, latem +2 h).
-    # Ceny paliw: co 20 minut w godzinach, gdy zwykle ukazuje się obwieszczenie.
-    - cron: "3,23,43 10-16 * * 1-5"
-    # Pozostałe godziny dnia roboczego i dane rynkowe: raz na godzinę.
-    - cron: "13 7-20 * * 1-5"
+    - cron: "17 5,11,17,23 * * *"
   workflow_dispatch:
     inputs:
       backfill:
@@ -72,11 +69,8 @@ jobs:
           fi
           python -m fuelprices --backfill "$BACKFILL"
       - name: Pobierz dane rynkowe (ropa, kurs, ORLEN)
-        # Raz na godzinę, nie przy każdym sprawdzeniu cen paliw.
         # Dodatek – awaria zewnętrznych źródeł nie może blokować cen paliw.
-        if: >-
-          (github.event_name == 'workflow_dispatch' && inputs.market) ||
-          (github.event_name == 'schedule' && github.event.schedule == '13 7-20 * * 1-5')
+        if: github.event_name == 'schedule' || inputs.market
         continue-on-error: true
         run: python -m fuelprices.market
       - name: Zapisz zmiany w repozytorium
