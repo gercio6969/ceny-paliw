@@ -27,6 +27,7 @@ import requests
 from .sejm_api import MAX_JSON_BYTES, fetch_limited
 
 BASE_URL = "https://monitorpolski.gov.pl"
+TIMEOUT = 15  # strona pozycji ma kilka kB – długie oczekiwanie oznacza problem po stronie serwera
 MAX_PROBES = 120  # ok. 10–15 pozycji dziennie, z zapasem na kilka dni przerwy
 STOP_AFTER_MISSING = 3  # tyle kolejnych nieistniejących pozycji kończy szukanie
 
@@ -83,7 +84,11 @@ def parse_position_page(text: str, year: int, position: int) -> Position | None:
 
 def fetch_position(session: requests.Session, year: int, position: int) -> Position | None:
     raw = fetch_limited(
-        session, page_url(year, position), max_bytes=MAX_JSON_BYTES, headers={"Accept": "text/html"}
+        session,
+        page_url(year, position),
+        max_bytes=MAX_JSON_BYTES,
+        headers={"Accept": "text/html"},
+        timeout=TIMEOUT,
     )
     return parse_position_page(raw.decode("utf-8", errors="replace"), year, position)
 

@@ -31,6 +31,21 @@ Ceny obowiązują od dnia następującego po ogłoszeniu obwieszczenia. Aplikacj
 
 Każde źródło pobierane jest osobno. Gdy któreś nie odpowiada, zostaje ostatnia znana wartość oznaczona w aplikacji jako nieaktualna, a ceny paliw aktualizują się normalnie.
 
+## Wyzwalacz z Maca (zalecany)
+
+Harmonogram GitHub Actions bywa opóźniany o godziny albo pomijany. W praktyce to kilka uruchomień
+dziennie, często dopiero wieczorem. Dlatego aktualizację uruchamia Mac przez `launchd`:
+
+```bash
+./scripts/wyzwalacz-mac.sh instaluj   # co 15 min, pon–pt 10:00–18:45, + jedno sprawdzenie od razu
+./scripts/wyzwalacz-mac.sh status     # czy działa i ostatnie wpisy w logu
+./scripts/wyzwalacz-mac.sh teraz      # jednorazowe sprawdzenie
+./scripts/wyzwalacz-mac.sh usun       # wyłączenie
+```
+
+Używa zalogowanego `gh`, nie zapisuje żadnych tokenów. Gdy Mac śpi, harmonogram GitHuba działa jako zapas.
+Wynik każdego przebiegu (stan obu źródeł) widać w podsumowaniu runu w zakładce Actions.
+
 ## Instalacja na telefonie
 
 - **iPhone (Safari):** otwórz adres aplikacji → *Udostępnij* → *Do ekranu początkowego*.

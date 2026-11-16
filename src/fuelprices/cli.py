@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import argparse
 import logging
+import os
 import sys
 from dataclasses import dataclass
 from datetime import date
@@ -70,35 +71,55 @@ def _from_eli(refs: list, backfill: int) -> list[Candidate]:
     return [Candidate(r.eli, r.year, r.position, r.announced, r.pdf_url) for r in refs[:backfill]]
 
 
+def _summary(lines: list[str]) -> None:
+    """Podsumowanie przebiegu widoczne publicznie na stronie runu w GitHub Actions."""
+    path = os.environ.get("GITHUB_STEP_SUMMARY")
+    if not path:
+        return
+    with open(path, "a", encoding="utf-8") as fh:
+        fh.write("\n".join(lines) + "\n")
+
+
 def run(output: Path, backfill: int, year: int) -> int:
     history = storage.load_history(output)
     known = {n.eli for n in history}
-    session = sejm_api.make_session()
+    status: dict[str, str] = {}
 
-    # 1. API ELI Sejmu: pełna historia, ale z opóźnieniem jednego dnia roboczego.
-    refs: list = []
-    eli_ok = True
-    try:
-        refs = sejm_api.find_notices(session, year)
-        if len(refs) < backfill:  # przełom roku – dociągnij koniec poprzedniego
-            refs += sejm_api.find_notices(session, year - 1)
-    except Exception as exc:  # noqa: BLE001 – drugie źródło może nadal zadziałać
-        eli_ok = False
-        log.warning("API ELI niedostępne: %s", exc)
-
-    # 2. Monitor Polski (RCL): obwieszczenia z dzisiaj, czyli ceny na jutro.
+    # 1. Monitor Polski (RCL) – najważniejsze źródło: obwieszczenia z dzisiaj, czyli ceny
+    #    na jutro. Osobna, „szybka” sesja: kilka krótkich prób zamiast minut oczekiwania.
     monitor_ok = True
     fresh: list[Candidate] = []
     try:
-        fresh = _from_monitor(session, year, history, refs)
-    except Exception as exc:  # noqa: BLE001
+        fresh = _from_monitor(sejm_api.make_session(retries=2, backoff=1), year, history, [])
+        status["Monitor Polski"] = f"OK, nowe: {', '.join(c.eli for c in fresh) or 'brak'}"
+    except Exception as exc:  # noqa: BLE001 – drugie źródło może nadal zadziałać
         monitor_ok = False
+        status["Monitor Polski"] = f"BŁĄD: {exc}"
         log.warning("Monitor Polski niedostępny: %s", exc)
+
+    # 2. API ELI Sejmu: pełna historia, ale z opóźnieniem jednego dnia roboczego.
+    refs: list = []
+    eli_ok = True
+    try:
+        session = sejm_api.make_session()
+        refs = sejm_api.find_notices(session, year)
+        if len(refs) < backfill:  # przełom roku – dociągnij koniec poprzedniego
+            refs += sejm_api.find_notices(session, year - 1)
+        status["API ELI"] = f"OK, najnowsze: {refs[0].eli if refs else 'brak'}"
+    except Exception as exc:  # noqa: BLE001
+        eli_ok = False
+        status["API ELI"] = f"BŁĄD: {exc}"
+        log.warning("API ELI niedostępne: %s", exc)
+
+    _summary(["### Źródła obwieszczeń", ""] + [f"- **{k}**: {v}" for k, v in status.items()])
+    for name, value in status.items():
+        log.info("%s: %s", name, value)
 
     if not eli_ok and not monitor_ok:
         log.error("Żadne źródło obwieszczeń nie odpowiada")
         return 1
 
+    session = sejm_api.make_session()
     candidates = {c.eli: c for c in _from_eli(refs, backfill)}
     candidates.update({c.eli: c for c in fresh})  # dla tych samych aktów wolimy plik z RCL
 

@@ -44,11 +44,11 @@ class ActRef:
         return f"{BASE_URL}/acts/{PUBLISHER}/{self.year}/{self.position}/text.pdf"
 
 
-def make_session() -> requests.Session:
+def make_session(retries: int = 4, backoff: float = 2) -> requests.Session:
     session = requests.Session()
     retry = Retry(
-        total=4,
-        backoff_factor=2,
+        total=retries,
+        backoff_factor=backoff,
         status_forcelist=(429, 500, 502, 503, 504),
         allowed_methods=("GET",),
     )
@@ -102,9 +102,10 @@ def fetch_limited(
     max_bytes: int,
     params: dict | None = None,
     headers: dict | None = None,
+    timeout: float = TIMEOUT,
 ) -> bytes:
     """GET z limitem rozmiaru – nie wczytuje do pamięci więcej niż ``max_bytes``."""
-    with session.get(url, params=params, headers=headers, timeout=TIMEOUT, stream=True) as resp:
+    with session.get(url, params=params, headers=headers, timeout=timeout, stream=True) as resp:
         resp.raise_for_status()
         declared = resp.headers.get("Content-Length")
         if declared and declared.isdigit() and int(declared) > max_bytes:

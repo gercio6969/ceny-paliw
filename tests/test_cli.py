@@ -21,7 +21,7 @@ def _mp(pos: int, day: int) -> monitor_polski.Position:
 def sources(monkeypatch, notice_text):
     """Atrapy obu źródeł; testy ustawiają, co każde z nich „zwraca”."""
     state = {"eli": [], "monitor": [], "downloaded": [], "monitor_calls": []}
-    monkeypatch.setattr(sejm_api, "make_session", lambda: None)
+    monkeypatch.setattr(sejm_api, "make_session", lambda **kwargs: None)
 
     def find_eli(session, year):
         if isinstance(state["eli"], Exception):
@@ -71,7 +71,7 @@ def test_todays_notice_comes_from_monitor_polski(tmp_path, sources):
     assert document["latest"]["eli"] == "MP/2026/1108"
     assert document["latest"]["valid_from"] == "2026-11-10"
     assert document["latest"]["source_url"] == monitor_polski.pdf_url(2026, 1108)
-    assert sources["monitor_calls"] == [1101]  # szuka od ostatniej znanej pozycji
+    assert sources["monitor_calls"] == [0]  # pusta historia – szuka od początku roku
 
 
 def test_same_notice_from_both_sources_is_downloaded_once(tmp_path, sources):
@@ -81,7 +81,6 @@ def test_same_notice_from_both_sources_is_downloaded_once(tmp_path, sources):
 
     assert cli.run(output, backfill=10, year=2026) == 0
     assert len(sources["downloaded"]) == 1
-    assert sources["monitor_calls"] == [1108]  # Monitor szuka dopiero za znanym aktem
 
 
 def test_works_when_eli_is_down(tmp_path, sources):
@@ -121,3 +120,28 @@ def test_fails_on_unparseable_notice(tmp_path, sources):
 def test_backfill_out_of_range_is_rejected(value):
     with pytest.raises(SystemExit):
         cli._parse_args(["--backfill", value])
+
+
+def test_monitor_scans_after_last_known_notice(tmp_path, sources):
+    output = tmp_path / "prices.json"
+    sources["eli"] = [_ref(1134, 12)]
+    assert cli.run(output, backfill=10, year=2026) == 0  # historia: 1134
+
+    sources["monitor"] = [_mp(1140, 13)]
+    assert cli.run(output, backfill=10, year=2026) == 0
+
+    assert sources["monitor_calls"] == [0, 1134]
+    assert _history(output) == ["MP/2026/1140", "MP/2026/1134"]
+
+
+def test_writes_github_step_summary(tmp_path, sources, monkeypatch):
+    summary = tmp_path / "summary.md"
+    monkeypatch.setenv("GITHUB_STEP_SUMMARY", str(summary))
+    sources["eli"] = ConnectionError("ELI down")
+    sources["monitor"] = [_mp(1141, 16)]
+
+    assert cli.run(tmp_path / "prices.json", backfill=10, year=2026) == 0
+
+    text = summary.read_text(encoding="utf-8")
+    assert "Monitor Polski**: OK, nowe: MP/2026/1141" in text
+    assert "API ELI**: BŁĄD" in text
