@@ -1,29 +1,50 @@
 {
   "schema": 1,
-  "updated_at": "2026-11-13T15:23:55+00:00",
-  "source": "Obwieszczenia Ministra Energii w sprawie maksymalnej ceny paliw ciekłych na stacji paliw, Monitor Polski (api.sejm.gov.pl)",
+  "updated_at": "2026-11-17T07:39:08+00:00",
+  "source": "Obwieszczenia Ministra Energii w sprawie maksymalnej ceny paliw ciekłych na stacji paliw (Monitor Polski, api.sejm.gov.pl) oraz komunikaty Ministerstwa Energii (gov.pl/web/energia)",
   "latest": {
-    "eli": "MP/2026/1140",
-    "position": 1140,
-    "announced": "2026-11-13",
-    "valid_from": "2026-11-14",
-    "source_url": "https://monitorpolski.gov.pl/M2026000114001.pdf",
+    "eli": "GOV/2026-11-17",
+    "position": 0,
+    "announced": "2026-11-16",
+    "valid_from": "2026-11-17",
+    "source_url": "https://www.gov.pl/web/energia/maksymalna-cena-detaliczna-paliw-obowiazujaca-17-listopada-2026-r",
     "prices": {
       "pb95": {
-        "net": 5.58,
+        "net": null,
         "gross": 6.02
       },
       "pb98": {
-        "net": 6.17,
-        "gross": 6.66
+        "net": null,
+        "gross": 6.68
       },
       "on": {
-        "net": 6.96,
-        "gross": 7.52
+        "net": null,
+        "gross": 7.64
       }
     }
   },
   "history": [
+    {
+      "eli": "GOV/2026-11-17",
+      "position": 0,
+      "announced": "2026-11-16",
+      "valid_from": "2026-11-17",
+      "source_url": "https://www.gov.pl/web/energia/maksymalna-cena-detaliczna-paliw-obowiazujaca-17-listopada-2026-r",
+      "prices": {
+        "pb95": {
+          "net": null,
+          "gross": 6.02
+        },
+        "pb98": {
+          "net": null,
+          "gross": 6.68
+        },
+        "on": {
+          "net": null,
+          "gross": 7.64
+        }
+      }
+    },
     {
       "eli": "MP/2026/1140",
       "position": 1140,
@@ -300,9 +321,9 @@
     {
       "eli": "MP/2026/1036",
       "position": 1036,
-      "announced": "2026-10-23",
-      "valid_from": "2026-10-24",
-      "source_url": "https://api.sejm.gov.pl/eli/acts/MP/2026/1036/text.pdf",
+      "announced": "2026-10-26",
+      "valid_from": "2026-10-27",
+      "source_url": "https://monitorpolski.gov.pl/MP/2026/1036",
       "prices": {
         "pb95": {
           "net": 6.09,
@@ -1113,27 +1134,6 @@
         "on": {
           "net": 5.9,
           "gross": 6.37
-        }
-      }
-    },
-    {
-      "eli": "MP/2026/601",
-      "position": 601,
-      "announced": "2026-06-11",
-      "valid_from": "2026-06-12",
-      "source_url": "https://api.sejm.gov.pl/eli/acts/MP/2026/601/text.pdf",
-      "prices": {
-        "pb95": {
-          "net": 5.59,
-          "gross": 6.04
-        },
-        "pb98": {
-          "net": 6.09,
-          "gross": 6.58
-        },
-        "on": {
-          "net": 5.93,
-          "gross": 6.4
         }
       }
     },
