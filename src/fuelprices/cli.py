@@ -16,7 +16,7 @@ from dataclasses import dataclass
 from datetime import date
 from pathlib import Path
 
-from . import gov_pl, monitor_polski, sejm_api, storage
+from . import gov_pl, monitor_paliw, monitor_polski, sejm_api, storage
 from .models import Notice
 from .parser import ParseError, parse_issue_date, parse_prices
 
@@ -103,7 +103,7 @@ def run(output: Path, backfill: int, year: int) -> int:
     gov_new: list[Notice] = []
     try:
         known_days = {n.valid_from for n in history}
-        gov_new = gov_pl.fetch_new(sejm_api.make_session(retries=2, backoff=1), known_days)
+        gov_new = gov_pl.fetch_new(sejm_api.make_session(retries=0), known_days)
         found = ", ".join(n.valid_from.isoformat() for n in gov_new) or "brak"
         status["gov.pl"] = f"OK, nowe dni: {found}"
     except Exception as exc:  # noqa: BLE001
@@ -111,7 +111,20 @@ def run(output: Path, backfill: int, year: int) -> int:
         status["gov.pl"] = f"BŁĄD: {exc}"
         log.warning("gov.pl niedostępne: %s", exc)
 
-    # 3. API ELI Sejmu: pełna historia, ale z opóźnieniem jednego dnia roboczego.
+    # 3. Monitor Paliw (monitorpaliw.pl, CC BY 4.0): te same oficjalne dane w JSON, osiągalne
+    #    z GitHuba – w praktyce główne źródło cen na jutro, gdy strony rządowe blokują GitHuba.
+    mp_ok = True
+    mp_new: list[Notice] = []
+    try:
+        mp_new = monitor_paliw.fetch_new(sejm_api.make_session(retries=2, backoff=1), history)
+        found = ", ".join(f"{n.valid_from.isoformat()} ({n.eli})" for n in mp_new) or "brak"
+        status["monitorpaliw.pl"] = f"OK, nowe: {found}"
+    except Exception as exc:  # noqa: BLE001
+        mp_ok = False
+        status["monitorpaliw.pl"] = f"BŁĄD: {exc}"
+        log.warning("monitorpaliw.pl niedostępne: %s", exc)
+
+    # 4. API ELI Sejmu: pełna historia, ale z opóźnieniem jednego dnia roboczego.
     refs: list = []
     eli_ok = True
     try:
@@ -129,7 +142,7 @@ def run(output: Path, backfill: int, year: int) -> int:
     for name, value in status.items():
         log.info("%s: %s", name, value)
 
-    if not eli_ok and not monitor_ok and not gov_ok:
+    if not eli_ok and not monitor_ok and not gov_ok and not mp_ok:
         log.error("Żadne źródło obwieszczeń nie odpowiada")
         return 1
 
@@ -155,9 +168,13 @@ def run(output: Path, backfill: int, year: int) -> int:
             return 1
         new.append(Notice(cand.eli, cand.position, announced, prices, source_url=cand.pdf_url))
 
-    # Komunikaty z gov.pl tylko na dni, których nie pokrywa żadne obwieszczenie.
-    official_days = {n.valid_from for n in new}
-    new += [n for n in gov_new if n.valid_from not in official_days]
+    # Wpisy z gov.pl i Monitora Paliw tylko na dni, których nie pokrywa własne obwieszczenie
+    # z PDF; z dwóch źródeł na ten sam dzień wygrywa pierwsze (gov.pl bezpośrednio).
+    covered = {n.valid_from for n in new}
+    for extra in [*gov_new, *mp_new]:
+        if extra.valid_from not in covered:
+            new.append(extra)
+            covered.add(extra.valid_from)
 
     if not new:
         newest = history[0].eli if history else "brak"

@@ -1,0 +1,43 @@
+{
+  "generated": "2026-11-17T06:25:03+01:00",
+  "sources": [
+    "Monitor Polski / api.sejm.gov.pl/eli (obwieszczenia Ministra Energii)",
+    "gov.pl/web/energia (Ministerstwo Energii)"
+  ],
+  "records": [
+    {
+      "pos": 1134, "year": 2026, "eli": "MP/2026/1134",
+      "title": "Obwieszczenie Ministra Energii z dnia 12 listopada 2026 r. w sprawie maksymalnej ceny paliw ciekłych na stacji paliw",
+      "pdf": "https://api.sejm.gov.pl/eli/acts/MP/2026/1134/text.pdf",
+      "netto": {"pb95": 5.61, "pb98": 6.19, "on": 6.98},
+      "brutto": {"pb95": 6.06, "pb98": 6.68, "on": 7.54},
+      "published": "2026-11-12",
+      "sources": [{"type": "eli", "url": "https://monitorpolski.gov.pl/MP/2026/1134", "note": "M.P. 2026 poz. 1134"}],
+      "edition_id": 3, "valid_from": "2026-11-13", "valid_to": "2026-11-13", "range_explicit": false
+    },
+    {
+      "pos": 1140, "year": 2026, "eli": "MP/2026/1140",
+      "title": "Obwieszczenie Ministra Energii z dnia 13 listopada 2026 r. w sprawie maksymalnej ceny paliw ciekłych na stacji paliw",
+      "pdf": "https://api.sejm.gov.pl/eli/acts/MP/2026/1140/text.pdf",
+      "netto": {"pb95": 5.58, "pb98": 6.17, "on": 6.96},
+      "brutto": {"pb95": 6.02, "pb98": 6.66, "on": 7.52},
+      "published": "2026-11-13",
+      "sources": [
+        {"type": "eli", "url": "https://monitorpolski.gov.pl/MP/2026/1140", "note": "M.P. 2026 poz. 1140"},
+        {"type": "pdf", "url": "https://api.sejm.gov.pl/eli/acts/MP/2026/1140/text.pdf", "note": "Obwieszczenie (PDF)"},
+        {"type": "govpl", "url": "https://www.gov.pl/web/energia/maksymalna-cena-detaliczna-paliw-obowiazujaca-w-dniach-14-16-listopada-2026-r", "note": "Maksymalna cena detaliczna paliw obowiązująca w dniach 14-16 listopada 2026 r."}
+      ],
+      "edition_id": 3, "valid_from": "2026-11-14", "valid_to": "2026-11-16", "range_explicit": false
+    },
+    {
+      "pos": null, "eli": null, "provisional": true,
+      "title": "Maksymalna cena detaliczna paliw obowiązująca 17 listopada 2026 r.",
+      "netto": null,
+      "brutto": {"pb95": 6.02, "pb98": 6.68, "on": 7.64},
+      "published": "2026-11-16",
+      "sources": [{"type": "govpl", "url": "https://www.gov.pl/web/energia/maksymalna-cena-detaliczna-paliw-obowiazujaca-17-listopada-2026-r", "note": "Maksymalna cena detaliczna paliw obowiązująca 17 listopada 2026 r."}],
+      "edition_id": 3, "valid_from": "2026-11-17", "valid_to": "2026-11-17", "range_explicit": true
+    }
+  ],
+  "audit": {"notes": ["III edycja: luki w dniach roboczych: 2026-11-18"]}
+}

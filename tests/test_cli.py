@@ -4,7 +4,7 @@ from decimal import Decimal
 
 import pytest
 
-from fuelprices import cli, gov_pl, monitor_polski, sejm_api
+from fuelprices import cli, gov_pl, monitor_paliw, monitor_polski, sejm_api
 from fuelprices.models import FuelPrice, Notice
 
 
@@ -49,7 +49,15 @@ def sources(monkeypatch, notice_text):
         return [n for n in state.get("gov", []) if n.valid_from not in known_days]
 
     monkeypatch.setattr(sejm_api, "download_pdf_text", download)
+
+    def fetch_mp(session, history):
+        if isinstance(state.get("mp"), Exception):
+            raise state["mp"]
+        days = {n.valid_from for n in history}
+        return [n for n in state.get("mp", []) if n.valid_from not in days]
+
     monkeypatch.setattr(gov_pl, "fetch_new", fetch_gov)
+    monkeypatch.setattr(monitor_paliw, "fetch_new", fetch_mp)
     return state
 
 
@@ -114,6 +122,7 @@ def test_fails_when_all_sources_are_down(tmp_path, sources):
     sources["eli"] = ConnectionError("ELI down")
     sources["monitor"] = ConnectionError("RCL down")
     sources["gov"] = ConnectionError("gov.pl down")
+    sources["mp"] = ConnectionError("monitorpaliw down")
     assert cli.run(tmp_path / "prices.json", backfill=10, year=2026) == 1
 
 
@@ -190,3 +199,16 @@ def test_official_notice_later_replaces_gov_entry(tmp_path, sources):
     assert cli.run(output, backfill=10, year=2026) == 0
 
     assert _history(output) == ["MP/2026/1141", "MP/2026/1140"]
+
+
+def test_tomorrow_from_monitor_paliw_when_government_sites_block_github(tmp_path, sources):
+    """Sytuacja z 17.11.2026: gov.pl i Monitor Polski blokują GitHuba."""
+    output = tmp_path / "prices.json"
+    sources["eli"] = [_ref(1140, 13)]
+    sources["monitor"] = ConnectionError("timeout")
+    sources["gov"] = ConnectionError("Network is unreachable")
+    sources["mp"] = [_gov_notice(16)]
+
+    assert cli.run(output, backfill=10, year=2026) == 0
+
+    assert _history(output) == ["GOV/2026-11-17", "MP/2026/1140"]

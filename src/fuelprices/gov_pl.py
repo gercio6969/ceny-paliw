@@ -33,7 +33,7 @@ from .sejm_api import MAX_JSON_BYTES, fetch_limited
 
 BASE_URL = "https://www.gov.pl"
 LIST_URL = f"{BASE_URL}/web/energia/wiadomosci"
-TIMEOUT = 20
+TIMEOUT = 10  # z GitHuba zwykle nieosiągalne – nie czekamy długo
 MAX_ARTICLES = 6
 
 _MONTHS = {

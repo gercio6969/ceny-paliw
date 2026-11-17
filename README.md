@@ -12,6 +12,7 @@ obwieszczenie MP, PDF  ──►  python -m fuelprices  ──►  data/prices.j
 ```
 
 1. **Scraper** (`src/fuelprices`) szuka obwieszczeń „w sprawie maksymalnej ceny paliw ciekłych na stacji paliw” w dwóch oficjalnych źródłach, pobiera nowe PDF-y, odczytuje ceny netto (zł/dm³) i z VAT (zł/l) i dopisuje je do `data/prices.json`:
+   - **monitorpaliw.pl** – otwarte dane (JSON, licencja CC BY 4.0) zbierane z tych samych oficjalnych źródeł; osiągalne z GitHuba, w praktyce główne źródło cen na jutro;
    - **gov.pl/web/energia** (komunikaty Ministerstwa Energii) – ceny na jutro w dniu ogłoszenia, tylko z VAT;
    - **API ELI Sejmu** – pełne obwieszczenia z cenami netto, ale z opóźnieniem jednego dnia roboczego; gdy się pojawią, zastępują wpis z gov.pl;
    - **monitorpolski.gov.pl** (Rządowe Centrum Legislacji) – próbowany przy okazji; z serwerów GitHuba zwykle nieosiągalny.
@@ -125,3 +126,5 @@ Opis zabezpieczeń i sposób zgłaszania podatności: [SECURITY.md](SECURITY.md)
 ## Licencja
 
 MIT © 2026 Gerard Modlewski
+
+Dane uzupełniające: [Monitor Paliw, monitorpaliw.pl](https://monitorpaliw.pl/), licencja [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/deed.pl).
