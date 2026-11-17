@@ -1,46 +1,67 @@
 {
   "schema": 1,
-  "updated_at": "2026-11-17T07:39:08+00:00",
+  "updated_at": "2026-11-17T14:30:01+00:00",
   "source": "Obwieszczenia Ministra Energii w sprawie maksymalnej ceny paliw ciekłych na stacji paliw (Monitor Polski, api.sejm.gov.pl) oraz komunikaty Ministerstwa Energii (gov.pl/web/energia)",
   "latest": {
-    "eli": "GOV/2026-11-17",
-    "position": 0,
-    "announced": "2026-11-16",
-    "valid_from": "2026-11-17",
-    "source_url": "https://www.gov.pl/web/energia/maksymalna-cena-detaliczna-paliw-obowiazujaca-17-listopada-2026-r",
+    "eli": "MP/2026/1144",
+    "position": 1144,
+    "announced": "2026-11-17",
+    "valid_from": "2026-11-18",
+    "source_url": "https://monitorpolski.gov.pl/M2026000114401.pdf",
     "prices": {
       "pb95": {
-        "net": null,
-        "gross": 6.02
+        "net": 5.55,
+        "gross": 5.99
       },
       "pb98": {
-        "net": null,
-        "gross": 6.68
+        "net": 6.15,
+        "gross": 6.64
       },
       "on": {
-        "net": null,
-        "gross": 7.64
+        "net": 7.01,
+        "gross": 7.57
       }
     }
   },
   "history": [
     {
-      "eli": "GOV/2026-11-17",
-      "position": 0,
-      "announced": "2026-11-16",
-      "valid_from": "2026-11-17",
-      "source_url": "https://www.gov.pl/web/energia/maksymalna-cena-detaliczna-paliw-obowiazujaca-17-listopada-2026-r",
+      "eli": "MP/2026/1144",
+      "position": 1144,
+      "announced": "2026-11-17",
+      "valid_from": "2026-11-18",
+      "source_url": "https://monitorpolski.gov.pl/M2026000114401.pdf",
       "prices": {
         "pb95": {
-          "net": null,
+          "net": 5.55,
+          "gross": 5.99
+        },
+        "pb98": {
+          "net": 6.15,
+          "gross": 6.64
+        },
+        "on": {
+          "net": 7.01,
+          "gross": 7.57
+        }
+      }
+    },
+    {
+      "eli": "MP/2026/1141",
+      "position": 1141,
+      "announced": "2026-11-16",
+      "valid_from": "2026-11-17",
+      "source_url": "https://monitorpolski.gov.pl/M2026000114101.pdf",
+      "prices": {
+        "pb95": {
+          "net": 5.58,
           "gross": 6.02
         },
         "pb98": {
-          "net": null,
+          "net": 6.18,
           "gross": 6.68
         },
         "on": {
-          "net": null,
+          "net": 7.08,
           "gross": 7.64
         }
       }
