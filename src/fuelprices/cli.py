@@ -13,7 +13,7 @@ import logging
 import os
 import sys
 from dataclasses import dataclass
-from datetime import date
+from datetime import date, timedelta
 from pathlib import Path
 
 from . import gov_pl, monitor_paliw, monitor_polski, sejm_api, storage
@@ -56,6 +56,11 @@ class Candidate:
     position: int
     announced: date | None
     pdf_url: str
+    title: str = ""
+
+    @property
+    def is_amendment(self) -> bool:
+        return "zmieniając" in self.title.lower()
 
 
 def _from_monitor(session, year: int, history: list[Notice], refs: list) -> list[Candidate]:
@@ -64,11 +69,14 @@ def _from_monitor(session, year: int, history: list[Notice], refs: list) -> list
     positions += [r.position for r in refs if r.year == year]
     last_known = max(positions, default=0)
     found = monitor_polski.find_new_fuel_notices(session, year, last_known)
-    return [Candidate(p.eli, p.year, p.position, p.announced, p.pdf_url) for p in found]
+    return [Candidate(p.eli, p.year, p.position, p.announced, p.pdf_url, p.title) for p in found]
 
 
 def _from_eli(refs: list, backfill: int) -> list[Candidate]:
-    return [Candidate(r.eli, r.year, r.position, r.announced, r.pdf_url) for r in refs[:backfill]]
+    return [
+        Candidate(r.eli, r.year, r.position, r.announced, r.pdf_url, r.title)
+        for r in refs[:backfill]
+    ]
 
 
 def _summary(lines: list[str]) -> None:
@@ -151,44 +159,68 @@ def run(output: Path, backfill: int, year: int) -> int:
     candidates.update({c.eli: c for c in fresh})  # dla tych samych aktów wolimy plik z RCL
 
     new: list[Notice] = []
+    failed: list[Candidate] = []
     for cand in sorted(candidates.values(), key=lambda c: (c.year, c.position), reverse=True):
         if cand.eli in known:
             continue
         known.add(cand.eli)
         log.info("Pobieram %s (%s)", cand.eli, cand.pdf_url)
-        text = sejm_api.download_pdf_text(session, cand.pdf_url)
         try:
+            text = sejm_api.download_pdf_text(session, cand.pdf_url)
             prices = parse_prices(text)
-        except ParseError as exc:
-            log.error("Nie udało się odczytać %s: %s", cand.eli, exc)
-            return 1
-        announced = cand.announced or parse_issue_date(text)
-        if announced is None:
-            log.error("Brak daty ogłoszenia dla %s", cand.eli)
-            return 1
+            announced = cand.announced or parse_issue_date(text)
+            if announced is None:
+                raise ParseError("brak daty ogłoszenia")
+        except Exception as exc:  # noqa: BLE001 – jeden nietypowy akt nie może zatrzymać reszty
+            kind = "obwieszczenie zmieniające" if cand.is_amendment else "obwieszczenie"
+            log.warning("Nie udało się odczytać %s (%s): %s", cand.eli, kind, exc)
+            failed.append(cand)
+            continue
         new.append(Notice(cand.eli, cand.position, announced, prices, source_url=cand.pdf_url))
 
-    # Wpisy z gov.pl i Monitora Paliw tylko na dni, których nie pokrywa własne obwieszczenie
-    # z PDF; z dwóch źródeł na ten sam dzień wygrywa pierwsze (gov.pl bezpośrednio).
-    covered = {n.valid_from for n in new}
-    for extra in [*gov_new, *mp_new]:
-        if extra.valid_from not in covered:
-            new.append(extra)
-            covered.add(extra.valid_from)
+    # Wpisy z gov.pl i Monitora Paliw; który wpis zostaje na dany dzień, decyduje
+    # storage.merge (oficjalne przed gov.pl, korekta przed pierwotnym obwieszczeniem).
+    new += [*gov_new, *mp_new]
+    merged = storage.merge(history, new)
+
+    # Akt, którego nie udało się odczytać, jest problemem tylko wtedy, gdy żadne źródło
+    # nie dało dla niego danych (ten sam numer ELI albo późniejsza korekta na ten dzień).
+    uncovered = [
+        c for c in failed
+        if not any(
+            n.eli == c.eli
+            or (n.is_official and n.position >= c.position and c.announced is not None
+                and n.valid_from == c.announced + timedelta(days=1))
+            for n in merged
+        )
+    ]  # fmt: skip
+    if failed:
+        _summary(
+            ["", "### Nieodczytane akty", ""]
+            + [
+                f"- {c.eli}: {'pokryty innym źródłem' if c not in uncovered else 'BRAK DANYCH'}"
+                f" – {c.title}"
+                for c in failed
+            ]
+        )
+    for cand in uncovered:
+        print(f"::error::Nie udało się odczytać {cand.eli} i żadne źródło go nie zastąpiło")
+
+    new = [n for n in new if n in merged and n not in history]
 
     if not new:
         newest = history[0].eli if history else "brak"
         log.info("Brak nowych obwieszczeń, najnowsze: %s", newest)
-        return 0
+        return 1 if uncovered else 0
 
-    storage.save(output, storage.merge(history, new))
+    storage.save(output, merged)
     for notice in new:
         p = notice.prices
         log.info(
             "%s (od %s): Pb95 %s, Pb98 %s, ON %s zł/l",
             notice.eli, notice.valid_from, p["pb95"].gross, p["pb98"].gross, p["on"].gross,
         )  # fmt: skip
-    return 0
+    return 1 if uncovered else 0
 
 
 def main(argv: list[str] | None = None) -> int:

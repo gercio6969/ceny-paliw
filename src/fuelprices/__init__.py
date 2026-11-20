@@ -1,4 +1,4 @@
 """Maksymalne ceny paliw z obwieszczeń Ministra Energii publikowanych w Monitorze Polskim."""
 
-__version__ = "1.5.0"
+__version__ = "1.5.1"
 __author__ = "Gerard Modlewski"

@@ -19,16 +19,25 @@ def load_history(path: Path) -> list[Notice]:
     return [Notice.from_dict(item) for item in data.get("history", [])]
 
 
+def rank(notice: Notice) -> tuple[bool, int]:
+    """Pierwszeństwo wpisu na dany dzień: oficjalne przed gov.pl, korekta przed pierwotnym."""
+    return (notice.is_official, notice.position)
+
+
 def merge(history: list[Notice], new: list[Notice]) -> list[Notice]:
     """Łączy historię z nowymi obwieszczeniami, od najnowszego.
 
-    Na jeden dzień obowiązywania przypada jeden wpis. Obwieszczenie z Monitora Polskiego
-    zastępuje wcześniejszy komunikat z gov.pl (ma ceny netto i numer pozycji), nigdy odwrotnie.
+    Na jeden dzień obowiązywania przypada jeden wpis, wybierany według rangi:
+      - obwieszczenie z Monitora Polskiego wygrywa z komunikatem z gov.pl (ma ceny netto
+        i numer pozycji), nigdy odwrotnie;
+      - z dwóch obwieszczeń na ten sam dzień wygrywa późniejsza pozycja – to obwieszczenie
+        zmieniające (korekta), np. poz. 1154 korygująca poz. 1150 z 18.11.2026;
+      - przy równej randze nowszy wpis zastępuje starszy (ten sam akt pobrany ponownie).
     """
     by_day: dict = {}
     for notice in [*history, *new]:
         current = by_day.get(notice.valid_from)
-        if current is None or notice.is_official or not current.is_official:
+        if current is None or rank(notice) >= rank(current):
             by_day[notice.valid_from] = notice
     ordered = sorted(by_day.values(), key=lambda n: (n.valid_from, n.position), reverse=True)
     return ordered[:MAX_HISTORY]

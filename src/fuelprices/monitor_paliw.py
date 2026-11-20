@@ -35,6 +35,7 @@ import requests
 from .models import FUEL_KEYS, FuelPrice, Notice
 from .parser import ParseError
 from .sejm_api import fetch_json
+from .storage import rank
 
 DATA_URL = "https://monitorpaliw.pl/data/prices.json"
 RECENT_RECORDS = 15  # tylko najnowsze; starszą historię uzupełnia API ELI
@@ -98,11 +99,12 @@ def parse_document(payload: object) -> list[Notice]:
 
 
 def fetch_new(session: requests.Session, history: list[Notice]) -> list[Notice]:
-    """Wpisy na dni, których brakuje w historii, albo oficjalne w miejsce tymczasowych."""
+    """Wpisy na dni, których brakuje w historii, albo ważniejsze od posiadanych
+    (oficjalne w miejsce tymczasowych, korekta w miejsce pierwotnego obwieszczenia)."""
     by_day = {n.valid_from: n for n in history}
     result = []
     for notice in parse_document(fetch_json(session, DATA_URL)):
         current = by_day.get(notice.valid_from)
-        if current is None or (notice.is_official and not current.is_official):
+        if current is None or rank(notice) > rank(current):
             result.append(notice)
     return result

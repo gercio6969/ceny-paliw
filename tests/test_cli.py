@@ -4,7 +4,7 @@ from decimal import Decimal
 
 import pytest
 
-from fuelprices import cli, gov_pl, monitor_paliw, monitor_polski, sejm_api
+from fuelprices import cli, gov_pl, monitor_paliw, monitor_polski, sejm_api, storage
 from fuelprices.models import FuelPrice, Notice
 
 
@@ -38,6 +38,9 @@ def sources(monkeypatch, notice_text):
 
     def download(session, url):
         state["downloaded"].append(url)
+        for fragment, text in state.get("texts", {}).items():
+            if fragment in url:
+                return text
         return state.get("text", notice_text)
 
     monkeypatch.setattr(sejm_api, "find_notices", find_eli)
@@ -53,8 +56,12 @@ def sources(monkeypatch, notice_text):
     def fetch_mp(session, history):
         if isinstance(state.get("mp"), Exception):
             raise state["mp"]
-        days = {n.valid_from for n in history}
-        return [n for n in state.get("mp", []) if n.valid_from not in days]
+        by_day = {n.valid_from: n for n in history}
+        return [
+            n
+            for n in state.get("mp", [])
+            if n.valid_from not in by_day or storage.rank(n) > storage.rank(by_day[n.valid_from])
+        ]
 
     monkeypatch.setattr(gov_pl, "fetch_new", fetch_gov)
     monkeypatch.setattr(monitor_paliw, "fetch_new", fetch_mp)
@@ -212,3 +219,58 @@ def test_tomorrow_from_monitor_paliw_when_government_sites_block_github(tmp_path
     assert cli.run(output, backfill=10, year=2026) == 0
 
     assert _history(output) == ["GOV/2026-11-17", "MP/2026/1140"]
+
+
+def _mp_paliw(pos: int, announced_day: int, on: str) -> Notice:
+    price = FuelPrice(gross=Decimal("5.97"), net=Decimal("5.53"))
+    on_price = FuelPrice(gross=Decimal(on), net=Decimal("6.96"))
+    return Notice(
+        eli=f"MP/2026/{pos}",
+        position=pos,
+        announced=date(2026, 11, announced_day),
+        prices={"pb95": price, "pb98": price, "on": on_price},
+    )
+
+
+def test_amending_notice_does_not_stop_the_run(tmp_path, sources):
+    """Sytuacja z 18.11.2026: poz. 1150 i obwieszczenie zmieniające poz. 1154 tego samego dnia.
+
+    Parser nie zna formatu korekty; dane korekty przychodzą z Monitora Paliw i wygrywają
+    z pierwotnym obwieszczeniem, a przebieg kończy się sukcesem.
+    """
+    output = tmp_path / "prices.json"
+    amendment = sejm_api.ActRef(
+        "MP/2026/1154", 2026, 1154,
+        "Obwieszczenie Ministra Energii zmieniające obwieszczenie w sprawie maksymalnej ceny paliw",
+        date(2026, 11, 18),
+    )  # fmt: skip
+    sources["eli"] = [amendment, _ref(1150, 18)]
+    sources["mp"] = [_mp_paliw(1154, 18, "7.51")]
+
+    sources["texts"] = {"/1154/": "Obwieszczenie zmieniające: w pkt 3 lit. b otrzymuje brzmienie"}
+
+    assert cli.run(output, backfill=10, year=2026) == 0
+
+    document = json.loads(output.read_text(encoding="utf-8"))
+    assert document["latest"]["eli"] == "MP/2026/1154"
+    assert document["latest"]["prices"]["on"]["gross"] == 7.51
+    assert [n["valid_from"] for n in document["history"]] == ["2026-11-19"]
+
+
+def test_unreadable_notice_without_any_replacement_fails(tmp_path, sources):
+    output = tmp_path / "prices.json"
+    sources["eli"] = [_ref(1150, 18)]
+    sources["text"] = "maksymalnej ceny paliw – nieznany format"
+
+    assert cli.run(output, backfill=10, year=2026) == 1
+
+
+def test_correction_from_monitor_paliw_replaces_saved_original(tmp_path, sources):
+    output = tmp_path / "prices.json"
+    sources["eli"] = [_ref(1150, 18)]
+    assert cli.run(output, backfill=10, year=2026) == 0  # zapisane pierwotne 1150
+
+    sources["mp"] = [_mp_paliw(1154, 18, "7.51")]
+    assert cli.run(output, backfill=10, year=2026) == 0
+
+    assert _history(output) == ["MP/2026/1154"]
