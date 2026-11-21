@@ -1,9 +1,9 @@
 {
   "schema": 1,
-  "updated_at": "2026-11-20T23:07:13+00:00",
+  "updated_at": "2026-11-21T13:30:39+00:00",
   "items": {
     "brent": {
-      "value": 89.87,
+      "value": 92.57,
       "previous": 91.98,
       "date": "2026-11-20",
       "history": [
@@ -125,14 +125,14 @@
         ],
         [
           "2026-11-20",
-          89.87
+          92.57
         ]
       ],
       "unit": "USD/bbl",
       "label": "Ropa Brent",
       "source": "ICE Brent (kontrakt), Yahoo Finance",
       "stale": false,
-      "value_pln": 364.99
+      "value_pln": 375.95
     },
     "usdpln": {
       "value": 4.0613,
@@ -289,14 +289,10 @@
       "stale": false
     },
     "orlen_shares": {
-      "value": 125.9,
-      "previous": 128.96,
-      "date": "2026-11-19",
+      "value": 121.28,
+      "previous": 125.9,
+      "date": "2026-11-20",
       "history": [
-        [
-          "2026-10-08",
-          155.46
-        ],
         [
           "2026-10-09",
           159.34
@@ -412,6 +408,10 @@
         [
           "2026-11-19",
           125.9
+        ],
+        [
+          "2026-11-20",
+          121.28
         ]
       ],
       "unit": "zł",
