@@ -99,12 +99,15 @@ jobs:
 
   deploy:
     needs: update
-    # Publikuj po zmianie kodu strony albo gdy pojawiły się nowe dane.
+    # Publikuj po zmianie kodu strony, gdy pojawiły się nowe dane, a przy każdym przebiegu
+    # z harmonogramu także bez zmian – wtedy nieudana publikacja naprawia się sama
+    # najpóźniej po 6 godzinach (np. awaria GitHub Pages z 23.11.2026).
     if: >-
       !cancelled() && (
         github.event_name == 'push' ||
         (needs.update.result == 'success' &&
-         (needs.update.outputs.changed == 'true' || inputs.publish))
+         (needs.update.outputs.changed == 'true' || github.event_name == 'schedule' ||
+          inputs.publish))
       )
     runs-on: ubuntu-latest
     timeout-minutes: 10
@@ -113,7 +116,7 @@ jobs:
       id-token: write
     environment:
       name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+      url: ${{ steps.deployment.outputs.page_url || steps.deployment_retry.outputs.page_url }}
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
@@ -132,4 +135,12 @@ jobs:
         with:
           path: _site
       - id: deployment
+        # GitHub Pages bywa chwilowo niedostępne („No artifacts named github-pages were found”).
+        continue-on-error: true
+        uses: actions/deploy-pages@d6db90164ac5ed86f2b6aed7e0febac5b3c0c03e # v4
+      - name: Odczekaj przed ponowną publikacją
+        if: steps.deployment.outcome == 'failure'
+        run: sleep 90
+      - id: deployment_retry
+        if: steps.deployment.outcome == 'failure'
         uses: actions/deploy-pages@d6db90164ac5ed86f2b6aed7e0febac5b3c0c03e # v4
