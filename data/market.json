@@ -1,16 +1,12 @@
 {
   "schema": 1,
-  "updated_at": "2026-11-22T13:24:55+00:00",
+  "updated_at": "2026-11-23T03:44:51+00:00",
   "items": {
     "brent": {
-      "value": 89.95,
-      "previous": 91.98,
-      "date": "2026-11-20",
+      "value": 89.82,
+      "previous": 92.57,
+      "date": "2026-11-23",
       "history": [
-        [
-          "2026-10-12",
-          106.65
-        ],
         [
           "2026-10-13",
           105.69
@@ -125,14 +121,17 @@
         ],
         [
           "2026-11-20",
-          89.95
+          92.57
+        ],
+        [
+          "2026-11-23",
+          89.82
         ]
       ],
       "unit": "USD/bbl",
       "label": "Ropa Brent",
       "source": "ICE Brent (kontrakt), Yahoo Finance",
-      "stale": false,
-      "value_pln": 365.31
+      "stale": false
     },
     "usdpln": {
       "value": 4.0613,
@@ -263,7 +262,7 @@
       "unit": "zł",
       "label": "USD/PLN",
       "source": "NBP, tabela A",
-      "stale": false
+      "stale": true
     },
     "orlen_wholesale": {
       "label": "Hurt ORLEN (netto)",
